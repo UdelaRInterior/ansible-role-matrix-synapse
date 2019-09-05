@@ -1,0 +1,28 @@
+---
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Configure nginx as reverse proxy for Synapse
+  template:
+    src: nginx_reverse_proxy.j2
+    dest: /etc/nginx/sites-available/{{ synapse_server_name }}
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart nginx
+
+- name: Enable nginx Synapse site
+  file:
+    path: /etc/nginx/sites-enabled/{{ synapse_server_name }}
+    src: /etc/nginx/sites-available/{{ synapse_server_name }}
+    state: link
+  notify: restart nginx
+
+- name: Disable nginx default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: restart nginx
