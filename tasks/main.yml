@@ -1,2 +1,72 @@
 ---
 # tasks file for ansible-role-matrix-synapse
+
+## Based on https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-synapse
+
+- name: Install dependencies
+  apt:
+    name:
+      - build-essential
+      - python3-dev
+      - libffi-dev
+      - python-pip
+      - python-setuptools
+      - sqlite3
+      - libssl-dev
+      - python-virtualenv
+      - libjpeg-dev
+      - libxslt1-dev
+    state: present
+    update_cache: yes
+
+- name: Create dedicated user
+  user:
+    name: synapse
+    create_home: yes
+    home: /opt/synapse
+    shell: /usr/bin/false
+    state: present
+
+- name: Upgrade pip and setuptools
+  pip:
+    name:
+      - pip
+      - setuptools
+      - virtualenv
+      - ndg-httpsclient
+      - twisted
+    state: latest
+
+- name: Install Synapse using pip
+  pip:
+    name: matrix-synapse
+    chdir: /opt/synapse
+    virtualenv: /opt/synapse/env
+    virtualenv_python: python3
+    state: present
+
+- name: Check if homeserver config file already exists
+  stat:
+    path: /opt/synapse/homeserver.yaml
+  register: config_file
+
+- name: Generate a configuration file
+  shell:
+    source /opt/synapse/env/bin/activate &&
+    python -m synapse.app.homeserver \
+      --server-name {{ synapse_server_name }} \
+      --config-path homeserver.yaml \
+      --generate-config \
+      --report-stats={{ synapse_report_stats }}
+  args:
+    chdir: /opt/synapse
+    executable: /bin/bash
+  when: not config_file.stat.exists
+
+- name: Enable registration for new users
+  lineinfile:
+    path: /opt/synapse/homeserver.yaml
+    regexp: '^enable_registration:'
+    line: 'enable_registration: true'
+    insertafter: '^#enable_registration:'
+  when: synapse_enable_registration | bool

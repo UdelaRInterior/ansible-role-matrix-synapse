@@ -1,2 +1,10 @@
 ---
 # defaults file for ansible-role-matrix-synapse
+
+# Our public domain name for the Synapse server
+synapse_server_name: "{{ inventory_hostname }}"
+
+synapse_report_stats: 'no'
+
+# Enable registration for new users
+synapse_enable_registration: false
