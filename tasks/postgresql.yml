@@ -1,0 +1,68 @@
+---
+
+## Based on https://github.com/matrix-org/synapse/blob/master/docs/postgres.rst
+
+- name: Install PostgreSQL and dependencies
+  apt:
+    name:
+      - postgresql
+      - libpq-dev
+      - python-psycopg2
+    state: present
+
+- name: Install Synapse PostgreSQL library
+  pip:
+    name: matrix-synapse[postgres]
+    chdir: /opt/synapse
+    virtualenv: /opt/synapse/env
+    virtualenv_python: python3
+    state: present
+
+- name: Create Synapse PostgreSQL user
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ synapse_psql_user }}"
+    password: "{{ synapse_psql_password }}"
+
+- name: Create PostgreSQL Database
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ synapse_psql_db_name }}"
+    encoding: UTF-8
+    lc_collate: C
+    lc_ctype: C
+    template: template0
+    owner: "{{ synapse_psql_user }}"
+
+- name: Disable use of SQLite in Synapse
+  lineinfile:
+    path: /opt/synapse/homeserver.yaml
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    # insertafter: '## Database ##'
+  with_items:
+    - regexp: 'database:$'
+      line: '#database:'
+    - regexp: '/*name: "sqlite3"'
+      line: '  # name: "sqlite3"'
+    - regexp: '/*args:'
+      line: '  # args:'
+    - regexp: '/*database: "/opt/synapse/homeserver.db"'
+      line: '    # database: "/opt/synapse/homeserver.db"'
+
+- name: Config Synapse to use PostgreSQL
+  blockinfile:
+    path: /opt/synapse/homeserver.yaml
+    insertafter: '^## Database ##'
+    block: |
+      database:
+        name: psycopg2
+        args:
+            user: "{{ synapse_psql_user }}"
+            password: "{{ synapse_psql_password }}"
+            database: "{{ synapse_psql_db_name }}"
+            host: "{{ synapse_psql_db_host }}"
+            cp_min: 5
+            cp_max: 10

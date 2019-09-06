@@ -8,3 +8,10 @@ synapse_report_stats: 'no'
 
 # Enable registration for new users
 synapse_enable_registration: false
+
+synapse_with_postgresql: true
+
+synapse_psql_db_name: synapse
+synapse_psql_db_host: localhost
+synapse_psql_user: synapse_user
+synapse_psql_password: secret

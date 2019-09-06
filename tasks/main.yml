@@ -4,3 +4,6 @@
 - include_tasks: install_from_source.yml
 
 - include_tasks: nginx_reverse_proxy.yml
+
+- include_tasks: postgresql.yml
+  when: synapse_with_postgresql | bool
