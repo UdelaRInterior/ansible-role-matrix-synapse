@@ -41,7 +41,6 @@
     path: /opt/synapse/homeserver.yaml
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    # insertafter: '## Database ##'
   with_items:
     - regexp: 'database:$'
       line: '#database:'

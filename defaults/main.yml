@@ -9,6 +9,7 @@ synapse_report_stats: 'no'
 # Enable registration for new users
 synapse_enable_registration: false
 
+# Install and configure Synapse with PostgreSQL Server
 synapse_with_postgresql: true
 
 synapse_psql_db_name: synapse
