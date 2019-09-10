@@ -1,0 +1,16 @@
+[Unit]
+Description=Synapse Matrix homeserver
+
+[Service]
+Type=simple
+User=matrix-synapse
+WorkingDirectory={{ synapse_installation_path }}
+ExecStartPre={{ synapse_installation_path }}/env/bin/python -m synapse.app.homeserver --config-path={{ synapse_installation_path }}/homeserver.yaml --config-path={{ synapse_installation_path }}/conf.d/ --generate-keys
+ExecStart={{ synapse_installation_path }}/env/bin/python -m synapse.app.homeserver --config-path={{ synapse_installation_path }}/homeserver.yaml --config-path={{ synapse_installation_path }}/conf.d/
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=3
+SyslogIdentifier=matrix-synapse
+
+[Install]
+WantedBy=multi-user.target

@@ -5,3 +5,8 @@
   service:
     name: nginx
     state: restarted
+
+- name: restart matrix-synapse
+  service:
+    name: matrix-synapse
+    state: restarted

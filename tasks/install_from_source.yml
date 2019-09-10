@@ -2,7 +2,7 @@
 
 ## Based on https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-synapse
 
-- name: Install dependencies
+- name: Install Synapse dependencies
   apt:
     name:
       - build-essential
@@ -18,14 +18,6 @@
     state: present
     update_cache: yes
 
-- name: Create dedicated user
-  user:
-    name: synapse
-    create_home: yes
-    home: /opt/synapse
-    shell: /usr/bin/false
-    state: present
-
 - name: Upgrade pip and setuptools
   pip:
     name:
@@ -36,37 +28,70 @@
       - twisted
     state: latest
 
+- name: Create dedicated user for Synapse
+  user:
+    name: matrix-synapse
+    create_home: yes
+    home: "{{ synapse_installation_path }}"
+    shell: /bin/false
+    state: present
+
 - name: Install Synapse using pip
   pip:
     name: matrix-synapse
-    chdir: /opt/synapse
-    virtualenv: /opt/synapse/env
+    chdir: "{{ synapse_installation_path }}"
+    virtualenv: "{{ synapse_installation_path }}/env"
     virtualenv_python: python3
     state: present
 
 - name: Check if homeserver config file already exists
   stat:
-    path: /opt/synapse/homeserver.yaml
+    path: "{{ synapse_installation_path }}/homeserver.yaml"
   register: config_file
 
 - name: Generate a configuration file
   shell:
-    source /opt/synapse/env/bin/activate &&
+    source {{ synapse_installation_path }}/env/bin/activate &&
     python -m synapse.app.homeserver \
       --server-name {{ synapse_server_name }} \
       --config-path homeserver.yaml \
       --generate-config \
       --report-stats={{ synapse_report_stats }}
   args:
-    chdir: /opt/synapse
+    chdir: "{{ synapse_installation_path }}"
     executable: /bin/bash
   when: not config_file.stat.exists
 
-- name: Enable registration for new users
-  lineinfile:
-    path: /opt/synapse/homeserver.yaml
-    regexp: '^enable_registration:'
-    line: 'enable_registration: true'
-    insertafter: '^#enable_registration:'
-  when: synapse_enable_registration | bool
+- name: Create custom config folder
+  file:
+    path: "{{ synapse_installation_path }}/conf.d"
+    state: directory
+    mode: 0755
 
+- name: Create a system service to run Synapse
+  template:
+    src: matrix-synapse.service.j2
+    dest: /lib/systemd/system/matrix-synapse.service
+    mode: 0644
+    owner: root
+    group: root
+  register: service_create
+
+- name: Reload systemctl daemon
+  systemd:
+    daemon_reload: yes
+  when: service_create.changed
+
+- name: Enable matrix-synapse.service
+  systemd:
+    name: matrix-synapse.service
+    enabled: yes
+
+- name: Enable/disable registration for new users
+  template:
+    src: registration.yaml.j2
+    dest: "{{ synapse_installation_path }}/conf.d/registration.yaml"
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart matrix-synapse

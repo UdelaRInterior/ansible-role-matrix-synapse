@@ -1,18 +1,22 @@
 ---
 # defaults file for ansible-role-matrix-synapse
 
+# Location where synapse will be downloaded and installed from PyPI
+synapse_installation_path: /var/lib/matrix-synapse
+
 # Our public domain name for the Synapse server
 synapse_server_name: "{{ inventory_hostname }}"
 
 synapse_report_stats: 'no'
 
-# Enable registration for new users
-synapse_enable_registration: false
+# Enable sign up for new users
+synapse_enable_registration: "false"
 
 # Install and configure Synapse with PostgreSQL Server
 synapse_with_postgresql: true
 
-synapse_psql_db_name: synapse
+# PostgreSQL credentials
+synapse_psql_db_name: matrix-synapse
 synapse_psql_db_host: localhost
-synapse_psql_user: synapse_user
-synapse_psql_password: secret
+synapse_psql_user: matrix-synapse
+synapse_psql_password: secret-password
