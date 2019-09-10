@@ -1,0 +1,27 @@
+## Database ##
+
+{% if synapse_with_postgresql %}
+
+database:
+  # The database engine name
+  name: psycopg2
+  # Arguments to pass to the engine
+  args:
+    user: "{{ synapse_psql_user }}"
+    password: "{{ synapse_psql_password }}"
+    database: "{{ synapse_psql_db_name }}"
+    host: "{{ synapse_psql_db_host }}"
+    cp_min: 5
+    cp_max: 10
+
+{% else %}
+
+database:
+  # The database engine name
+  name: "sqlite3"
+  # Arguments to pass to the engine
+  args:
+    # Path to the database
+    database: "{{ synapse_installation_path }}/homeserver.db"
+
+{% endif %}
