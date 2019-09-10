@@ -1,38 +1,78 @@
-Role Name
-=========
+# Ansibe Role Matrix Synapse
+### From source with Nginx reverse proxy and PostgreSQL / SQLite
 
-A brief description of the role goes here.
+Role that automates the installation and configuration of a Matrix Synapse homeserver using the [`from source`](https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-from-source) method, recommended option to have the most updated version that doesn't suffer known security vulnerabilities.
+
+Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt certificates are configured to simplify communication with clients and federated servers.
+
+As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Ansible version >= 2.7
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yaml
+# Location where synapse will be downloaded and installed from PyPI
+synapse_installation_path: /var/lib/matrix-synapse
+
+# Our public domain name for the Synapse server
+synapse_server_name: "{{ inventory_hostname }}"
+
+synapse_report_stats: 'no'
+
+# Enable sign up for new users
+synapse_enable_registration: "false"
+
+# Install and configure Synapse with PostgreSQL Server
+synapse_with_postgresql: true
+
+# PostgreSQL credentials
+synapse_psql_db_name: matrix-synapse
+synapse_psql_db_host: localhost
+synapse_psql_user: matrix-synapse
+synapse_psql_password: secret-password
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role depends of [geerlingguy.certbot](https://galaxy.ansible.com/geerlingguy/certbot) to generate and renew valid Let's Encrypt certificates that allow proper communication with clients and other federated servers
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+- hosts: servers
+  roles:
+    - role: udelarinterior.matrix_synapse
+      synapse_enable_registration: "true"
+      synapse_with_postgresql: true
+      synapse_psql_db_name: matrix-synapse
+      synapse_psql_db_host: localhost
+      synapse_psql_user: matrix-synapse
+      synapse_psql_password: my-password
+      certbot_admin_email: admin@my-organization.org
+      certbot_certs:
+        - domains:
+          - "{{ synapse_server_name }}"
+          - 'msg.my-organization.org'
+          - 'chat.my-organization.org'
+```
 
 License
 -------
 
-BSD
+(c) Universidad de la República (UdelaR), Red de Unidades Informáticas de la UdelaR en el Interior. Licenced under GPL-v3.
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[@santiagomr](https://github.com/santiagomr)
+[@UdelaRInterior](https://github.com/UdelaRInterior)
+https://proyectos.interior.edu.uy/
