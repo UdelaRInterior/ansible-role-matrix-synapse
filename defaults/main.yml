@@ -20,3 +20,24 @@ synapse_psql_db_name: matrix-synapse
 synapse_psql_db_host: localhost
 synapse_psql_user: matrix-synapse
 synapse_psql_password: secret-password
+
+
+###################### geerlingguy.certbot vars ######################
+
+# # Certbot auto-renew cron job configuration (for certificate renewals).
+# certbot_auto_renew: true
+# certbot_auto_renew_user: "root"
+# certbot_auto_renew_hour: 5
+# certbot_auto_renew_minute: 25
+# certbot_auto_renew_options: '--quiet --no-self-upgrade --pre-hook "service nginx stop" --post-hook "service nginx start"'
+
+# # Parameters used when creating new Certbot certs.
+# certbot_create_if_missing: true
+# certbot_create_method: standalone
+# certbot_admin_email: admin@my-organization.org
+# certbot_certs:
+#   - domains:
+#       - "{{ synapse_server_name }}"
+
+# certbot_create_standalone_stop_services: []
+#   # - nginx
