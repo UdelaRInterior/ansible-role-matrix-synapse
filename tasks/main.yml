@@ -7,3 +7,6 @@
 
 - include_tasks: postgresql.yml
   when: synapse_with_postgresql | bool
+
+- include_tasks: riot_web.yml
+  when: synapse_installation_with_riot | bool

@@ -1,0 +1,43 @@
+---
+
+## Based on https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-synapse
+
+- name: Create public directory for Riot Web
+  file:
+    path: "{{ riot_installation_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Download and unpack Riot Web
+  unarchive:
+    remote_src: yes
+    src: https://github.com/vector-im/riot-web/releases/download/v{{ riot_version }}/riot-v{{ riot_version }}.tar.gz
+    dest: "{{ riot_installation_path }}"
+    owner: root
+    group: root
+
+- name: Set Riot custom configuration
+  template:
+    src: var/www/riot/config.json.j2
+    dest: "{{ riot_installation_path }}/riot-v{{ riot_version }}/config.json"
+    owner: root
+    group: root
+    mode: 0664
+
+- name: Set nginx configuration file for Riot Web
+  template:
+    src: etc/nginx/sites-available/reverse_proxy_and_riot_web.j2
+    dest: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart nginx
+
+- name: Ensure that the Synapse and Riot site is enabled
+  file:
+    path: /etc/nginx/sites-enabled/{{ synapse_server_name }}.conf
+    src: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+    state: link
+  notify: restart nginx

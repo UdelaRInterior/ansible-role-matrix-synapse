@@ -21,6 +21,12 @@ synapse_psql_db_host: localhost
 synapse_psql_user: matrix-synapse
 synapse_psql_password: secret-password
 
+# Riot Web App
+synapse_installation_with_riot: false
+riot_installation_path: /var/www/riot
+riot_version: '1.3.5'
+riot_display_name: 'My Org Chat'
+
 
 ###################### geerlingguy.certbot vars ######################
 
