@@ -7,8 +7,8 @@
 
 - name: Configure nginx as reverse proxy for Synapse
   template:
-    src: nginx_reverse_proxy.j2
-    dest: /etc/nginx/sites-available/{{ synapse_server_name }}
+    src: etc/nginx/sites-available/reverse_proxy.j2
+    dest: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
     mode: 0644
     owner: root
     group: root
@@ -16,8 +16,8 @@
 
 - name: Enable nginx Synapse site
   file:
-    path: /etc/nginx/sites-enabled/{{ synapse_server_name }}
-    src: /etc/nginx/sites-available/{{ synapse_server_name }}
+    path: /etc/nginx/sites-enabled/{{ synapse_server_name }}.conf
+    src: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
     state: link
   notify: restart nginx
 

@@ -1,7 +1,11 @@
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
+
     server_name {{ synapse_server_name }};
+
+    access_log  /var/log/nginx/{{ synapse_server_name }}.access.log;
+    error_log  /var/log/nginx/{{ synapse_server_name }}.error.log;
 
     location /_matrix {
         proxy_pass http://localhost:8008;
@@ -16,7 +20,11 @@ server {
 server {
     listen 8448 ssl;
     listen [::]:8448 ssl;
+
     server_name {{ synapse_server_name }};
+
+    access_log  /var/log/nginx/{{ synapse_server_name }}.federation.access.log;
+    error_log  /var/log/nginx/{{ synapse_server_name }}.federation.error.log;
 
     location / {
         proxy_pass http://localhost:8008;

@@ -38,7 +38,7 @@
 
 - name: Enable/disable PostgreSQL Database
   template:
-    src: database.yaml.j2
+    src: var/lib/matrix-synapse/conf.d/database.yaml.j2
     dest: "{{ synapse_installation_path }}/conf.d/database.yaml"
     mode: 0644
     owner: root

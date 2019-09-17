@@ -70,7 +70,7 @@
 
 - name: Create a system service to run Synapse
   template:
-    src: matrix-synapse.service.j2
+    src: lib/systemd/system/matrix-synapse.service.j2
     dest: /lib/systemd/system/matrix-synapse.service
     mode: 0644
     owner: root
@@ -89,7 +89,7 @@
 
 - name: Enable/disable registration for new users
   template:
-    src: registration.yaml.j2
+    src: var/lib/matrix-synapse/conf.d/registration.yaml.j2
     dest: "{{ synapse_installation_path }}/conf.d/registration.yaml"
     mode: 0644
     owner: root
