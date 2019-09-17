@@ -12,7 +12,8 @@ synapse_report_stats: 'no'
 # Enable sign up for new users
 synapse_enable_registration: "false"
 
-# Install and configure Synapse with PostgreSQL Server
+
+### Install and configure Synapse with PostgreSQL Server
 synapse_with_postgresql: true
 
 # PostgreSQL credentials
@@ -21,10 +22,15 @@ synapse_psql_db_host: localhost
 synapse_psql_user: matrix-synapse
 synapse_psql_password: secret-password
 
-# Riot Web App
+### Riot Web App
+# Also install the riot web application along synapse
 synapse_installation_with_riot: false
 riot_installation_path: /var/www/riot
+
+# Look https://github.com/vector-im/riot-web/releases to use the latest version
 riot_version: '1.3.5'
+
+# Name to display for the server
 riot_display_name: 'My Org Chat'
 
 
