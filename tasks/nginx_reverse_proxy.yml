@@ -5,21 +5,25 @@
     name: nginx
     state: present
 
-- name: Configure nginx as reverse proxy for Synapse
-  template:
-    src: etc/nginx/sites-available/reverse_proxy.j2
-    dest: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
-    mode: 0644
-    owner: root
-    group: root
-  notify: restart nginx
+- block:
+    - name: Configure nginx as reverse proxy for Synapse
+      template:
+        src: etc/nginx/sites-available/reverse_proxy.j2
+        dest: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+        mode: 0644
+        owner: root
+        group: root
+      notify: restart nginx
 
-- name: Enable nginx Synapse site
-  file:
-    path: /etc/nginx/sites-enabled/{{ synapse_server_name }}.conf
-    src: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
-    state: link
-  notify: restart nginx
+    - name: Enable nginx Synapse site
+      file:
+        path: /etc/nginx/sites-enabled/{{ synapse_server_name }}.conf
+        src: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+        state: link
+      notify: restart nginx
+  when: (not synapse_installation_with_riot) or not (riot_server_name == synapse_server_name)
+  # This block prevents the configuration file from being created in cases where it will be
+  # replaced later by riot_web.yml tasks. And so the role idempotence is mantained (changed = 0 after running)
 
 - name: Disable nginx default site
   file:

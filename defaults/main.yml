@@ -27,6 +27,9 @@ synapse_psql_password: secret-password
 synapse_installation_with_riot: false
 riot_installation_path: /var/www/riot
 
+# Our public domain name for the Riot Web client
+riot_server_name: "{{ synapse_server_name }}"
+
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
 riot_version: '1.3.5'
 
@@ -50,6 +53,7 @@ riot_display_name: 'My Org Chat'
 # certbot_certs:
 #   - domains:
 #       - "{{ synapse_server_name }}"
+#       - "{{ riot_server_name }}"
 
 # certbot_create_standalone_stop_services: []
 #   # - nginx

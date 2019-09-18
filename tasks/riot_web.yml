@@ -1,6 +1,6 @@
 ---
 
-## Based on https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-synapse
+## Based on https://github.com/vector-im/riot-web/#getting-started
 
 - name: Create public directory for Riot Web
   file:
@@ -28,16 +28,16 @@
 
 - name: Set nginx configuration file for Riot Web
   template:
-    src: etc/nginx/sites-available/reverse_proxy_and_riot_web.j2
-    dest: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+    src: "etc/nginx/sites-available/{{ 'reverse_proxy_and_riot_web.j2' if (riot_server_name == synapse_server_name) else 'riot_web.j2' }}"
+    dest: /etc/nginx/sites-available/{{ riot_server_name }}.conf
     mode: 0644
     owner: root
     group: root
   notify: restart nginx
 
-- name: Ensure that the Synapse and Riot site is enabled
+- name: Ensure that Riot site is enabled
   file:
-    path: /etc/nginx/sites-enabled/{{ synapse_server_name }}.conf
-    src: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+    path: /etc/nginx/sites-enabled/{{ riot_server_name }}.conf
+    src: /etc/nginx/sites-available/{{ riot_server_name }}.conf
     state: link
   notify: restart nginx
