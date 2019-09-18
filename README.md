@@ -7,7 +7,7 @@ Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt 
 
 As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
 
-Finally, this role also allows you to install the [Riot web](https://riot.im/app/#/welcome) application with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). You can install it at your own risk or consider using different domains for Synapse and Riot.
+Finally, this role also allows you to install the [Riot web](https://riot.im/app/#/welcome) application with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). You can install it at your own risk in the same domain or using a different one for Riot (`riot_server_name`).
 
 Requirements
 ------------
@@ -41,6 +41,8 @@ synapse_psql_password: secret-password
 # Also install the riot web application along synapse
 synapse_installation_with_riot: false
 riot_installation_path: /var/www/riot
+# Our public domain name for the Riot Web client
+riot_server_name: "{{ synapse_server_name }}"
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
 riot_version: '1.3.5'
 # Name to display for the server
