@@ -1,17 +1,17 @@
 ---
 # defaults file for ansible-role-matrix-synapse
 
+# Our friendly and public domain name for the Synapse server
+synapse_server_name: "{{ inventory_hostname }}"
+# FQDN of the server that effectively hosting synapse
+synapse_server_fqdn: "{{ inventory_hostname }}"
+
 # Location where synapse will be downloaded and installed from PyPI
 synapse_installation_path: /var/lib/matrix-synapse
 
-# Our public domain name for the Synapse server
-synapse_server_name: "{{ inventory_hostname }}"
-
-synapse_report_stats: 'no'
-
 # Enable sign up for new users
 synapse_enable_registration: "false"
-
+synapse_report_stats: 'no'
 
 ### Install and configure Synapse with PostgreSQL Server
 synapse_with_postgresql: true
@@ -52,6 +52,7 @@ riot_display_name: 'My Org Chat'
 # certbot_admin_email: admin@my-organization.org
 # certbot_certs:
 #   - domains:
+#       - "{{ synapse_server_fqdn }}"
 #       - "{{ synapse_server_name }}"
 #       - "{{ riot_server_name }}"
 

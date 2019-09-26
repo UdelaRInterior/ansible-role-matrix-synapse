@@ -24,7 +24,7 @@ server {
     }
 
     add_header Strict-Transport-Security "max-age=31536000";
-    ssl_certificate /etc/letsencrypt/live/{{ synapse_server_name }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ synapse_server_name }}/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{ synapse_server_fqdn }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ synapse_server_fqdn }}/privkey.pem;
 
 }

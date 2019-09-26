@@ -9,7 +9,7 @@
     - name: Configure nginx as reverse proxy for Synapse
       template:
         src: etc/nginx/sites-available/reverse_proxy.j2
-        dest: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+        dest: /etc/nginx/sites-available/{{ synapse_server_fqdn }}.conf
         mode: 0644
         owner: root
         group: root
@@ -17,8 +17,8 @@
 
     - name: Enable nginx Synapse site
       file:
-        path: /etc/nginx/sites-enabled/{{ synapse_server_name }}.conf
-        src: /etc/nginx/sites-available/{{ synapse_server_name }}.conf
+        path: /etc/nginx/sites-enabled/{{ synapse_server_fqdn }}.conf
+        src: /etc/nginx/sites-available/{{ synapse_server_fqdn }}.conf
         state: link
       notify: restart nginx
   when: (not synapse_installation_with_riot) or not (riot_server_name == synapse_server_name)
