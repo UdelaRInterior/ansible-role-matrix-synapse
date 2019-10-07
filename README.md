@@ -21,8 +21,11 @@ Role Variables
 # Location where synapse will be downloaded and installed from PyPI
 synapse_installation_path: /var/lib/matrix-synapse
 
-# Our public domain name for the Synapse server
+# Our friendly and public domain name for the Synapse
+# server (the one that conforms user ID and room alias)
 synapse_server_name: "{{ inventory_hostname }}"
+# FQDN of the server that effectively hosting synapse
+synapse_server_fqdn: "{{ inventory_hostname }}"
 
 synapse_report_stats: 'no'
 
@@ -44,9 +47,11 @@ riot_installation_path: /var/www/riot
 # Our public domain name for the Riot Web client
 riot_server_name: "{{ synapse_server_name }}"
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.3.5'
+riot_version: '1.4.2'
 # Name to display for the server
 riot_display_name: 'My Org Chat'
+riot_default_theme: light # light or dark
+riot_default_country_code: GB
 ```
 
 Dependencies
