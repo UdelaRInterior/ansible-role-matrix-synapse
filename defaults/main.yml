@@ -1,7 +1,8 @@
 ---
 # defaults file for ansible-role-matrix-synapse
 
-# Our friendly and public domain name for the Synapse server
+# Our friendly and public domain name for the Synapse
+# server (the one that conforms user ID and room alias)
 synapse_server_name: "{{ inventory_hostname }}"
 # FQDN of the server that effectively hosting synapse
 synapse_server_fqdn: "{{ inventory_hostname }}"
@@ -31,11 +32,12 @@ riot_installation_path: /var/www/riot
 riot_server_name: "{{ synapse_server_name }}"
 
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.3.5'
+riot_version: '1.4.2'
 
 # Name to display for the server
 riot_display_name: 'My Org Chat'
-
+riot_default_theme: light # light or dark
+riot_default_country_code: GB
 
 ###################### geerlingguy.certbot vars ######################
 

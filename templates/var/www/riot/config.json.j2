@@ -1,7 +1,7 @@
 {
     "default_server_config": {
         "m.homeserver": {
-            "base_url": "https://{{ synapse_server_name }}",
+            "base_url": "https://{{ synapse_server_fqdn }}",
             "server_name": "{{ riot_display_name }}"
         },
         "m.identity_server": {
@@ -15,9 +15,16 @@
     "brand": "{{ riot_display_name }}",
     "integrations_ui_url": "https://scalar.vector.im/",
     "integrations_rest_url": "https://scalar.vector.im/api",
+    "integrations_widgets_urls": [
+        "https://scalar.vector.im/_matrix/integrations/v1",
+        "https://scalar.vector.im/api",
+        "https://scalar-staging.vector.im/_matrix/integrations/v1",
+        "https://scalar-staging.vector.im/api",
+        "https://scalar-staging.riot.im/scalar/api"
+    ],
     "integrations_jitsi_widget_url": "https://scalar.vector.im/api/widgets/jitsi.html",
     "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
-    "defaultCountryCode": "GB",
+    "defaultCountryCode": "{{ riot_default_country_code }}",
     "showLabsSettings": false,
     "features": {
         "feature_pinning": "labs",
@@ -26,7 +33,7 @@
         "feature_state_counters": "labs"
     },
     "default_federate": true,
-    "default_theme": "light",
+    "default_theme": "{{ riot_default_theme }}",
     "roomDirectory": {
         "servers": [
             "matrix.org"
