@@ -21,7 +21,7 @@
         src: /etc/nginx/sites-available/{{ synapse_server_fqdn }}.conf
         state: link
       notify: restart nginx
-  when: (not synapse_installation_with_riot) or not (riot_server_name == synapse_server_name)
+  when: (not synapse_installation_with_riot) or not (riot_server_name == synapse_server_fqdn)
   # This block prevents the configuration file from being created in cases where it will be
   # replaced later by riot_web.yml tasks. And so the role idempotence is mantained (changed = 0 after running)
 

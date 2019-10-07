@@ -28,7 +28,7 @@
 
 - name: Set nginx configuration file for Riot Web
   template:
-    src: "etc/nginx/sites-available/{{ 'reverse_proxy_and_riot_web.j2' if (riot_server_name == synapse_server_name) else 'riot_web.j2' }}"
+    src: "etc/nginx/sites-available/{{ 'reverse_proxy_and_riot_web.j2' if (riot_server_name == synapse_server_fqdn) else 'riot_web.j2' }}"
     dest: /etc/nginx/sites-available/{{ riot_server_name }}.conf
     mode: 0644
     owner: root

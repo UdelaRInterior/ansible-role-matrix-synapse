@@ -18,10 +18,10 @@ server {
 }
 
 server {
-    listen 8448 ssl;
-    listen [::]:8448 ssl;
+    listen 8448 ssl default_server;
+    listen [::]:8448 ssl default_server;
 
-    server_name {{ synapse_server_fqdn }};
+    server_name {{ synapse_server_name }};
 
     access_log  /var/log/nginx/{{ synapse_server_fqdn }}.federation.access.log;
     error_log  /var/log/nginx/{{ synapse_server_fqdn }}.federation.error.log;
