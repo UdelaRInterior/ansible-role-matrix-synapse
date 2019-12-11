@@ -1,7 +1,7 @@
 # Ansibe Role Matrix Synapse
 ### From source with Nginx reverse proxy and PostgreSQL / SQLite
 
-Role that automates the installation and configuration of a Matrix Synapse homeserver using the [`from source`](https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-from-source) method, recommended option to have the most updated version that doesn't suffer known security vulnerabilities.
+Role that automates the installation, update and configuration of a Matrix Synapse homeserver using the [`from source`](https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-from-source) method, recommended option to have the most updated version that doesn't suffer known security vulnerabilities.
 
 Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt certificates are configured to simplify communication with clients and federated servers.
 
@@ -18,19 +18,22 @@ Role Variables
 --------------
 
 ```yaml
-# Location where synapse will be downloaded and installed from PyPI
-synapse_installation_path: /var/lib/matrix-synapse
-
 # Our friendly and public domain name for the Synapse
 # server (the one that conforms user ID and room alias)
 synapse_server_name: "{{ inventory_hostname }}"
 # FQDN of the server that effectively hosting synapse
 synapse_server_fqdn: "{{ inventory_hostname }}"
 
-synapse_report_stats: 'no'
+# Location where synapse will be downloaded and installed from PyPI
+synapse_installation_path: /var/lib/matrix-synapse
+
+# present : Keep the same version once synapse was installed or
+# latest : update it if there is a new update available from pip
+synapse_pip_state: present
 
 # Enable sign up for new users
 synapse_enable_registration: "false"
+synapse_report_stats: 'no'
 
 ### Install and configure Synapse with PostgreSQL Server
 synapse_with_postgresql: true
@@ -47,7 +50,7 @@ riot_installation_path: /var/www/riot
 # Our public domain name for the Riot Web client
 riot_server_name: "{{ synapse_server_name }}"
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.4.2'
+riot_version: '1.5.6'
 # Name to display for the server
 riot_display_name: 'My Org Chat'
 riot_default_theme: light # light or dark

@@ -10,6 +10,10 @@ synapse_server_fqdn: "{{ inventory_hostname }}"
 # Location where synapse will be downloaded and installed from PyPI
 synapse_installation_path: /var/lib/matrix-synapse
 
+# present : Keep the same version once synapse was installed or
+# latest : update it if there is a new update available from pip
+synapse_pip_state: present
+
 # Enable sign up for new users
 synapse_enable_registration: "false"
 synapse_report_stats: 'no'
@@ -32,7 +36,7 @@ riot_installation_path: /var/www/riot
 riot_server_name: "{{ synapse_server_name }}"
 
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.4.2'
+riot_version: '1.5.6'
 
 # Name to display for the server
 riot_display_name: 'My Org Chat'

@@ -36,13 +36,13 @@
     shell: /bin/false
     state: present
 
-- name: Install Synapse using pip
+- name: Install or update Synapse using pip
   pip:
     name: matrix-synapse
     chdir: "{{ synapse_installation_path }}"
     virtualenv: "{{ synapse_installation_path }}/env"
     virtualenv_python: python3
-    state: present
+    state: "{{ synapse_pip_state }}"
 
 - name: Check if homeserver config file already exists
   stat:
