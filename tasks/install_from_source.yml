@@ -43,6 +43,7 @@
     virtualenv: "{{ synapse_installation_path }}/env"
     virtualenv_python: python3
     state: "{{ synapse_pip_state }}"
+  notify: restart matrix-synapse
 
 - name: Check if homeserver config file already exists
   stat:
