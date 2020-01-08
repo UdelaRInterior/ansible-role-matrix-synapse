@@ -11,7 +11,8 @@ synapse_server_fqdn: "{{ inventory_hostname }}"
 synapse_installation_path: /var/lib/matrix-synapse
 
 # present : Keep the same version once synapse was installed or
-# latest : update it if there is a new update available from pip
+# latest : upgrade it if there is a new upgrade available from pip
+# IF YOU PLAN TO UPGRADE, CHECK FIRST: https://github.com/matrix-org/synapse/blob/master/UPGRADE.rst
 synapse_pip_state: present
 
 # Enable sign up for new users
