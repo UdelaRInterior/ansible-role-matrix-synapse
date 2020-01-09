@@ -5,6 +5,8 @@ Role that automates the installation, update and configuration of a Matrix Synap
 
 Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt certificates are configured to simplify communication with clients and federated servers.
 
+A simple Postfix installation makes it possible to send notifications, account recovery, etc. via email. With easily customizable templates through variables.
+
 As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
 
 Finally, this role also allows you to install the [Riot web](https://riot.im/app/#/welcome) application with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). You can install it at your own risk in the same domain or using a different one for Riot (`riot_server_name`).
@@ -35,6 +37,10 @@ synapse_pip_state: present
 synapse_enable_registration: "false"
 synapse_report_stats: 'no'
 
+# Local sources to templates and configuration files, useful
+# for overwriting if you want to use your own templates in conf.d
+synapse_confd_templates_src: var/lib/matrix-synapse/conf.d
+
 ### Install and configure Synapse with PostgreSQL Server
 synapse_with_postgresql: true
 # PostgreSQL credentials
@@ -42,6 +48,17 @@ synapse_psql_db_name: matrix-synapse
 synapse_psql_db_host: localhost
 synapse_psql_user: matrix-synapse
 synapse_psql_password: secret-password
+
+### Email
+# If email is not configured, password reset, registration and notifications via email will be disabled.
+synapse_email_enable: true
+synapse_email_hostname: "{{ synapse_server_fqdn }}"
+synapse_email_notif_from: "YourFriendlyhomeserver" # without spaces
+
+synapse_email_with_custom_templates: false
+# If true, remember use a customized version of the template conf.d/email.yaml.j2 to reference them
+synapse_email_templates_src: email_notif_templates
+synapse_email_templates_dest: "{{ synapse_installation_path }}/email_notif_templates"
 
 ### Riot Web App
 # Also install the riot web application along synapse
