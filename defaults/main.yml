@@ -28,6 +28,12 @@ synapse_psql_db_host: localhost
 synapse_psql_user: matrix-synapse
 synapse_psql_password: secret-password
 
+# Email configuration
+# If email is not configured, password reset, registration and notifications via email will be disabled.
+synapse_email_enable: true
+synapse_email_hostname: "{{ synapse_server_fqdn }}"
+synapse_email_notif_from: "Your Friendly homeserver"
+
 ### Riot Web App
 # Also install the riot web application along synapse
 synapse_installation_with_riot: false

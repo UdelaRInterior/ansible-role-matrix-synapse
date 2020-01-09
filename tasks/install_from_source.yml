@@ -88,11 +88,14 @@
     name: matrix-synapse.service
     enabled: yes
 
-- name: Enable/disable registration for new users
+- name: Set custom configurations
   template:
-    src: var/lib/matrix-synapse/conf.d/registration.yaml.j2
-    dest: "{{ synapse_installation_path }}/conf.d/registration.yaml"
+    src: "var/lib/matrix-synapse/conf.d/{{ item }}.yaml.j2"
+    dest: "{{ synapse_installation_path }}/conf.d/{{ item }}.yaml"
     mode: 0644
     owner: root
     group: root
   notify: restart matrix-synapse
+  with_items:
+    - custom
+    - registration

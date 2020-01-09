@@ -1,0 +1,33 @@
+---
+
+- block:
+  - name: Ensure postfix is installed
+    apt:
+      name: postfix
+      state: present
+
+  - name: Configure postfix
+    template:
+      src: etc/postfix/main.cf.j2
+      dest: /etc/postfix/main.cf
+      mode: 0644
+      owner: root
+      group: root
+    notify: restart postfix
+
+  - name: Configure mailing
+    template:
+      src: var/lib/matrix-synapse/conf.d/email.yaml.j2
+      dest: "{{ synapse_installation_path }}/conf.d/email.yaml"
+      mode: 0644
+      owner: root
+      group: root
+    notify: restart matrix-synapse
+  when: synapse_email_enable | bool
+
+- name: Disable mailing
+  file:
+    path: "{{ synapse_installation_path }}/conf.d/email.yaml"
+    state: absent
+  notify: restart matrix-synapse
+  when: not synapse_email_enable | bool
