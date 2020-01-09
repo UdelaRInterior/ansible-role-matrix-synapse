@@ -1,6 +1,10 @@
 ---
 # defaults file for ansible-role-matrix-synapse
 
+##########################
+##### Synapse server #####
+##########################
+
 # Our friendly and public domain name for the Synapse
 # server (the one that conforms user ID and room alias)
 synapse_server_name: "{{ inventory_hostname }}"
@@ -16,10 +20,19 @@ synapse_installation_path: /var/lib/matrix-synapse
 synapse_pip_state: present
 
 # Enable sign up for new users
-synapse_enable_registration: "false"
+synapse_enable_registration: 'false'
 synapse_report_stats: 'no'
 
-### Install and configure Synapse with PostgreSQL Server
+# Local sources to templates and configuration files, useful
+# for overwriting if you want to use your own templates in conf.d
+synapse_confd_templates_src: var/lib/matrix-synapse/conf.d
+
+
+#######################
+####### Database ######
+#######################
+
+# Install and configure Synapse with PostgreSQL Server, instead of SQLite.
 synapse_with_postgresql: true
 
 # PostgreSQL credentials
@@ -28,13 +41,26 @@ synapse_psql_db_host: localhost
 synapse_psql_user: matrix-synapse
 synapse_psql_password: secret-password
 
-# Email configuration
+
+#######################
+######## Email ########
+#######################
+
 # If email is not configured, password reset, registration and notifications via email will be disabled.
 synapse_email_enable: true
 synapse_email_hostname: "{{ synapse_server_fqdn }}"
-synapse_email_notif_from: "Your Friendly homeserver"
+synapse_email_notif_from: "YourFriendlyhomeserver" # without spaces
 
-### Riot Web App
+synapse_email_with_custom_templates: false
+# If true, remember use a customized version of the template conf.d/email.yaml.j2 to reference them
+synapse_email_templates_src: email_notif_templates
+synapse_email_templates_dest: "{{ synapse_installation_path }}/email_notif_templates"
+
+
+#######################
+########  Riot  #######
+#######################
+
 # Also install the riot web application along synapse
 synapse_installation_with_riot: false
 riot_installation_path: /var/www/riot
@@ -49,6 +75,7 @@ riot_version: '1.5.6'
 riot_display_name: 'My Org Chat'
 riot_default_theme: light # light or dark
 riot_default_country_code: GB
+
 
 ###################### geerlingguy.certbot vars ######################
 

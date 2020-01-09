@@ -15,9 +15,9 @@
       group: root
     notify: restart postfix
 
-  - name: Configure mailing
+  - name: Configure Synapse mailing
     template:
-      src: var/lib/matrix-synapse/conf.d/email.yaml.j2
+      src: "{{ synapse_confd_templates_src }}/email.yaml.j2"
       dest: "{{ synapse_installation_path }}/conf.d/email.yaml"
       mode: 0644
       owner: root
@@ -31,3 +31,11 @@
     state: absent
   notify: restart matrix-synapse
   when: not synapse_email_enable | bool
+
+- name: Copy custom email templates to server
+  synchronize:
+    src: "{{ synapse_email_templates_src }}"
+    dest: "{{ synapse_email_templates_dest }}"
+    owner: no
+    group: no
+  when: synapse_email_with_custom_templates | bool

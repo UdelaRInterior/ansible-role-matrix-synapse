@@ -24,7 +24,7 @@ email:
 #   # should contain links to a self-hosted installation of Riot; when set
 #   # the "app_name" setting is ignored
 #   #
-#   riot_base_url: "http://riot.example.org"
+#   riot_base_url: "https://{{ riot_server_name }}"
 #
 #   # Configure the time that a validation email or text message code
 #   # will expire after sending
@@ -40,7 +40,7 @@ email:
 #   # For the list of default templates, please see
 #   # https://github.com/matrix-org/synapse/tree/master/synapse/res/templates
 #   #
-#   #template_dir: res/templates
+#   #template_dir: "{{ synapse_email_templates_dest }}/email_notif_templates"
 #
 #   # Templates for email notifications
 #   #

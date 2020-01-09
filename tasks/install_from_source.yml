@@ -90,7 +90,7 @@
 
 - name: Set custom configurations
   template:
-    src: "var/lib/matrix-synapse/conf.d/{{ item }}.yaml.j2"
+    src: "{{ synapse_confd_templates_src }}/{{ item }}.yaml.j2"
     dest: "{{ synapse_installation_path }}/conf.d/{{ item }}.yaml"
     mode: 0644
     owner: root
