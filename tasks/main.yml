@@ -5,6 +5,8 @@
 
 - include_tasks: email.yml
 
+- include_tasks: ldap.yml
+
 - include_tasks: nginx_reverse_proxy.yml
 
 - include_tasks: postgresql.yml

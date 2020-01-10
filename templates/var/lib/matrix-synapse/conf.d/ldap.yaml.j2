@@ -1,0 +1,16 @@
+## LDAP ##
+
+password_providers:
+  - module: "ldap_auth_provider.LdapAuthProvider"
+    config:
+      enabled: true
+      uri: "ldap://{{ synapse_ldap_uri }}"
+      start_tls: {{ synapse_ldap_start_tls }}
+      base: "{{ synapse_ldap_base }}"
+      attributes:
+         uid: "{{ synapse_ldap_uid }}"
+         mail: "{{ synapse_ldap_mail }}"
+         name: "{{ synapse_ldap_name }}"
+      bind_dn: "{{ synapse_ldap_bind_dn }}"
+      bind_password: "{{ synapse_ldap_bind_password }}"
+      #filter: "(objectClass=posixAccount)"
