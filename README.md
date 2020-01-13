@@ -5,9 +5,11 @@ Role that automates the installation, update and configuration of a Matrix Synap
 
 Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt certificates are configured to simplify communication with clients and federated servers.
 
+As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
+
 A simple Postfix installation makes it possible to send notifications, account recovery, etc. via email. With easily customizable templates through variables.
 
-As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
+Through authentication providers it's possible to integrate decentralized logins. This role implements integration with LDAP optionally.
 
 Finally, this role also allows you to install the [Riot web](https://riot.im/app/#/welcome) application with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). You can install it at your own risk in the same domain or using a different one for Riot (`riot_server_name`).
 
@@ -59,6 +61,17 @@ synapse_email_with_custom_templates: false
 # If true, remember use a customized version of the template conf.d/email.yaml.j2 to reference them
 synapse_email_templates_src: email_notif_templates
 synapse_email_templates_dest: "{{ synapse_installation_path }}/email_notif_templates"
+
+###  LDAP
+synapse_with_ldap_authentication: false
+synapse_ldap_uri: ldap.example.com:389
+synapse_ldap_start_tls: 'true'
+synapse_ldap_base: ou=users,dc=example,dc=com
+synapse_ldap_uid: cn
+synapse_ldap_mail: email
+synapse_ldap_name: givenName
+synapse_ldap_bind_dn: ""
+synapse_ldap_bind_password: ""
 
 ### Riot Web App
 # Also install the riot web application along synapse
