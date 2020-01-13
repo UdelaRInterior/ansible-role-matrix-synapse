@@ -58,6 +58,22 @@ synapse_email_templates_dest: "{{ synapse_installation_path }}/email_notif_templ
 
 
 #######################
+########  LDAP  #######
+#######################
+
+synapse_with_ldap_authentication: false
+
+synapse_ldap_uri: ldap.example.com:389
+synapse_ldap_start_tls: 'true'
+synapse_ldap_base: ou=users,dc=example,dc=com
+synapse_ldap_uid: cn
+synapse_ldap_mail: email
+synapse_ldap_name: givenName
+synapse_ldap_bind_dn: ""
+synapse_ldap_bind_password: ""
+
+
+#######################
 ########  Riot  #######
 #######################
 
