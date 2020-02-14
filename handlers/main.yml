@@ -11,6 +11,11 @@
     name: postfix
     state: restarted
 
+- name: restart coturn
+  service:
+    name: coturn
+    state: restarted
+
 - name: restart matrix-synapse
   service:
     name: matrix-synapse
