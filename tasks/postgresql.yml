@@ -10,6 +10,11 @@
       - python-psycopg2
     state: present
 
+- name: Ensure PostgreSQL service is started
+  service:
+    name: postgresql
+    state: started
+
 - name: Install Synapse PostgreSQL library
   pip:
     name: matrix-synapse[postgres]

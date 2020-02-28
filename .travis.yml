@@ -1,0 +1,21 @@
+---
+language: python
+services: docker
+
+install:
+  # Install test dependencies.
+  - pip install ansible molecule yamllint ansible-lint testinfra docker
+
+before_script:
+  # Use actual Ansible Galaxy role name for the project directory.
+  - ansible-galaxy install geerlingguy.certbot
+  - cd ../
+  - mv ansible-role-matrix-synapse udelarinterior.matrix_synapse
+  - cd udelarinterior.matrix_synapse
+
+script:
+  # Run tests.
+  - molecule test
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
