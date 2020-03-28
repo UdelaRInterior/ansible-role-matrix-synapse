@@ -1,5 +1,6 @@
-# Ansibe Role Matrix Synapse
-### From source with Nginx reverse proxy and PostgreSQL / SQLite
+# Ansibe Role Matrix Synapse [![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse)
+
+### Automated installation from source with Nginx reverse proxy and PostgreSQL database
 
 Role that automates the installation, update and configuration of a Matrix Synapse homeserver using the [`from source`](https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-from-source) method, recommended option to have the most updated version that doesn't suffer known security vulnerabilities.
 
@@ -11,7 +12,34 @@ A simple Postfix installation makes it possible to send notifications, account r
 
 Through authentication providers it's possible to integrate decentralized logins. This role implements integration with LDAP optionally.
 
-Finally, this role also allows you to install the [Riot web](https://riot.im/app/#/welcome) application with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). You can install it at your own risk in the same domain or using a different one for Riot (`riot_server_name`).
+Finally, this role also allows you to serve the [Riot web](https://riot.im/app/#/welcome) application together with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). But serve Riot is very useful. Fully recommended if you have the posibility to destiny different domain names for Synapse and Riot (`synapse_server_name` != `riot_server_name`). Otherwise you can install both in the same domain name at your own risk (`synapse_server_name` == `riot_server_name`).
+
+Deployment diagram
+------------
+
+The typical use case consists on deploy the following architecture (Note that this is the role's default behavior, only with the addition of setting `synapse_installation_with_riot` to `true`):
+
+```
+                80,443/tcp        80,443,8448/tcp           25/tcp
+                    |                   |                     |
++-------------------|-------------------|------------+   +----+----+
+|  Nginx server     |                   |            |   | Postfix |
+|                   |                   |            |   +----^----+
+|   +---------------v---+     +---------v----------+ |        |
+|   |  Standard  Site   |     | Reverse Proxy Site | |        |
+|   +--------+----------+     +---^------------^---+ |        |
++------------|--------------------|------------|-----+        |
+             |             443/tcp|            | 8008/tcp     |
+             |              ______|         +--v--------------+-----+
+             |             /                |                       |
+      +------v-------+    /                 | Matrix Synapse Server |
+      | Riot Web App |___/                  |                       |
+      +--------------+                      +------------+----------+
+                                                         | 5432/tcp
+                                              +----------v--------+
+                                              | PostgreSQL Server |
+                                              +-------------------+
+```
 
 Requirements
 ------------
@@ -99,18 +127,19 @@ Example Playbook
 - hosts: servers
   roles:
     - role: udelarinterior.matrix_synapse
-      synapse_enable_registration: "true"
-      synapse_with_postgresql: true
-      synapse_psql_db_name: matrix-synapse
-      synapse_psql_db_host: localhost
-      synapse_psql_user: matrix-synapse
-      synapse_psql_password: my-password
-      certbot_admin_email: admin@my-organization.org
-      certbot_certs:
-        - domains:
-          - "{{ synapse_server_name }}"
-          - 'msg.my-organization.org'
-          - 'chat.my-organization.org'
+      vars:
+        synapse_enable_registration: "true"
+        synapse_with_postgresql: true
+        synapse_psql_db_name: matrix-synapse
+        synapse_psql_db_host: localhost
+        synapse_psql_user: matrix-synapse
+        synapse_psql_password: my-password
+        certbot_admin_email: admin@my-organization.org
+        certbot_certs:
+          - domains:
+            - "{{ synapse_server_name }}"
+            - 'msg.my-organization.org'
+            - 'chat.my-organization.org'
 ```
 
 License
