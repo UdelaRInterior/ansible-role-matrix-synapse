@@ -85,7 +85,7 @@ riot_installation_path: /var/www/riot
 riot_server_name: "{{ synapse_server_name }}"
 
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.5.6'
+riot_version: '1.5.13'
 
 # Name to display for the server
 riot_display_name: 'My Org Chat'
