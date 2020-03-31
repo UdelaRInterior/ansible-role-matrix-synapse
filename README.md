@@ -1,4 +1,7 @@
-# Ansibe Role Matrix Synapse [![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse)
+# Ansibe Role Matrix Synapse 
+
+[![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse)
+[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.matrix_synapse-blue.svg)](https://galaxy.ansible.com/udelarinterior/matrix_synapse)
 
 ### Automated installation from source with Nginx reverse proxy and PostgreSQL database
 
