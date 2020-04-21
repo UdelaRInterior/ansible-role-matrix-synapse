@@ -13,6 +13,18 @@
     "disable_login_language_selector": false,
     "disable_3pid_login": false,
     "brand": "{{ riot_display_name }}",
+{% if(riot_customatize_ui) %}
+    "branding": {
+        "welcomeBackgroundUrl": "{{ riot_custom_branding.welcomeBackgroundUrl }}",
+        "authHeaderLogoUrl": "{{ riot_custom_branding.authHeaderLogoUrl }}",
+        "authFooterLinks": {{ riot_custom_branding.authFooterLinks | to_json }}
+    },
+{% endif %}
+{% if(riot_welcome_page_template_src is defined and riot_welcome_page_template_src | length > 0) %}
+    "embeddedPages": {
+        "welcomeUrl": "custom-welcome.html"
+    },
+{% endif %}
     "integrations_ui_url": "https://scalar.vector.im/",
     "integrations_rest_url": "https://scalar.vector.im/api",
     "integrations_widgets_urls": [
@@ -51,6 +63,12 @@
         "https://matrix-client.matrix.org": false
     },
     "settingDefaults": {
-        "breadcrumbs": true
+        "breadcrumbs": true,
+{% if(riot_customatize_ui) %}
+        "custom_themes": {{ riot_custom_themes | to_nice_json }}
+{% endif %}
+    },
+    "jitsi": {
+        "preferredDomain": "{{ riot_jitsi_preferred_domain }}"
     }
 }

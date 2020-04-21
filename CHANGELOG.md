@@ -1,5 +1,13 @@
 # Change Log
 
+
+## [v1.3.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.3.0)
+
+* Added Riot web app UI customization
+  * Custom welcome page template
+  * [Branding](https://github.com/vector-im/riot-web/blob/develop/docs/config.md)
+  * [Custom themes](https://github.com/vector-im/riot-web/blob/develop/docs/theming.md#custom-themes)
+
 ## [v1.2.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.2.0)
 
 * Added LDAP integration
