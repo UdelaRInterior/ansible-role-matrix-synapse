@@ -111,11 +111,49 @@ riot_installation_path: /var/www/riot
 # Our public domain name for the Riot Web client
 riot_server_name: "{{ synapse_server_name }}"
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.5.6'
+riot_version: '1.5.15'
+riot_jitsi_preferred_domain: jitsi.riot.im
 # Name to display for the server
 riot_display_name: 'My Org Chat'
-riot_default_theme: light # light or dark
+riot_default_theme: light # 'light', 'dark' or your own 'custom-${theme-name}' (see riot_custom_themes below)
 riot_default_country_code: GB
+
+### Riot UI customization
+riot_customatize_ui: false
+
+riot_welcome_page_template_src: var/www/riot/custom-welcome.html.j2   # Leave it empty if you don't want to overwrite the default Riot welcome page
+riot_welcome_logo_url: welcome/images/logo.svg
+riot_welcome_title: 'Welcome to Riot.im'
+riot_welcome_description: 'Decentralised, encrypted chat &amp; collaboration powered by [matrix]'
+
+riot_custom_branding:
+  welcomeBackgroundUrl: themes/riot/img/backgrounds/valley.jpg
+  authHeaderLogoUrl: themes/riot/img/logos/riot-im-logo-black-text.svg
+  authFooterLinks:
+    - text: blog
+      url: https://blog.riot.im/
+    - text: twitter
+      url: https://twitter.com/@RiotChat
+    - text: github
+      url: https://github.com/vector-im/riot-web
+
+riot_custom_themes:
+  - name: "Deep Purple"
+    is_dark: true
+    colors:
+      accent-color: "#6503b3"
+      primary-color: "#368bd6"
+      warning-color: "#b30356"
+      sidebar-color: "#15171B"
+      roomlist-background-color: "#22262E"
+      roomlist-text-color: "#A1B2D1"
+      roomlist-text-secondary-color: "#EDF3FF"
+      roomlist-highlights-color: "#343A46"
+      roomlist-separator-color: "#a1b2d1"
+      timeline-background-color: "#181b21"
+      timeline-text-color: "#EDF3FF"
+      timeline-text-secondary-color: "#A1B2D1"
+      timeline-highlights-color: "#22262E"
 ```
 
 Dependencies

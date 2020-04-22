@@ -26,6 +26,15 @@
     group: root
     mode: 0664
 
+- name: Set custom Riot welcome page
+  template:
+    src: var/www/riot/custom-welcome.html.j2
+    dest: "{{ riot_installation_path }}/riot-v{{ riot_version }}/custom-welcome.html"
+    owner: root
+    group: root
+    mode: 0664
+  when: riot_customatize_ui | bool
+
 - name: Set nginx configuration file for Riot Web
   template:
     src: "etc/nginx/sites-available/{{ 'reverse_proxy_and_riot_web.j2' if (riot_server_name == synapse_server_fqdn) else 'riot_web.j2' }}"
