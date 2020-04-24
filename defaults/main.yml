@@ -7,8 +7,11 @@
 
 # Our friendly and public domain name for the Synapse
 # server (the one that conforms user ID and room alias)
+# eg: my-organization.org (you would get @users:my-organization.org and #rooms:my-organization.org)
 synapse_server_name: "{{ inventory_hostname }}"
-# FQDN of the server that effectively hosting synapse
+
+# FQDN of the server that effectively hosting synapse (matrix endpoint)
+# eg: matrix.my-organization.org
 synapse_server_fqdn: "{{ inventory_hostname }}"
 
 # Location where synapse will be downloaded and installed from PyPI
@@ -84,7 +87,7 @@ synapse_turn_port: 5349  # TURN listener TCP&UDP port: 3478(default) 5349(for TL
 synapse_turn_shared_secret: 5Eydym68SovsZkYLT8G9TOSCFwc2E6ijVLwL4FQgbukKPUalQZOe5gj22E9EhYrm # change it and put it from a vault
 synapse_turn_user_lifetime: 86400000
 synapse_turn_allow_guests: True
-synapse_turn_denied_peer_ip: 
+synapse_turn_denied_peer_ip:
   - 10.0.0.0-10.255.255.255
   - 172.16.0.0-172.31.255.255
   - 192.168.0.0-192.168.255.255
@@ -103,6 +106,7 @@ synapse_installation_with_riot: false
 riot_installation_path: /var/www/riot
 
 # Our public domain name for the Riot Web client
+# eg: riot.my-organization.org
 riot_server_name: "{{ synapse_server_name }}"
 
 # Look https://github.com/vector-im/riot-web/releases to use the latest version

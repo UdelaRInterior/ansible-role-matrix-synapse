@@ -24,7 +24,7 @@
       denied-peer-ip={{ item }}
       {% endif %}
       {% endfor %}
-      
+
       {% for item in synapse_turn_allowed_peer_ip %}
       {% if(item is defined and item | length > 0) %}
       allowed-peer-ip={{ item }}

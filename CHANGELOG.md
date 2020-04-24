@@ -1,5 +1,8 @@
 # Change Log
 
+## [v1.4.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.4.0)
+
+* Added CoTURN installation and integration
 
 ## [v1.3.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.3.0)
 

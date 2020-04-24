@@ -1,17 +1,19 @@
-# Ansibe Role Matrix Synapse 
+# Ansibe Role Matrix Synapse
 
 [![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse)
 [![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.matrix_synapse-blue.svg)](https://galaxy.ansible.com/udelarinterior/matrix_synapse)
 
 ### Automated installation from source with Nginx reverse proxy and PostgreSQL database
 
-Role that automates the installation, update and configuration of a Matrix Synapse homeserver using the [`from source`](https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-from-source) method, recommended option to have the most updated version that doesn't suffer known security vulnerabilities.
+Role that automates the installation, upgrade and configuration of a Matrix Synapse homeserver using the [`from source`](https://github.com/matrix-org/synapse/blob/master/INSTALL.md#installing-from-source) method, recommended option to have the most updated version that doesn't suffer known security vulnerabilities.
 
 Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt certificates are configured to simplify communication with clients and federated servers.
 
 As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
 
 A simple Postfix installation makes it possible to send notifications, account recovery, etc. via email. With easily customizable templates through variables.
+
+Optionally this role allows provisioning a CoTURN installation to [enable VoIP relaying on your matrix homeserver with TURN](https://github.com/matrix-org/synapse/blob/master/docs/turn-howto.md).
 
 Through authentication providers it's possible to integrate decentralized logins. This role implements integration with LDAP optionally.
 
@@ -20,28 +22,60 @@ Finally, this role also allows you to serve the [Riot web](https://riot.im/app/#
 Deployment diagram
 ------------
 
-The typical use case consists on deploy the following architecture (Note that this is the role's default behavior, only with the addition of setting `synapse_installation_with_riot` to `true`):
+## Basic installation
 
+The essential installation to have your own matrix homeserver ready for production (Note that this is the role's default behavior):
 ```
-                80,443/tcp        80,443,8448/tcp           25/tcp
-                    |                   |                     |
-+-------------------|-------------------|------------+   +----+----+
-|  Nginx server     |                   |            |   | Postfix |
-|                   |                   |            |   +----^----+
-|   +---------------v---+     +---------v----------+ |        |
-|   |  Standard  Site   |     | Reverse Proxy Site | |        |
-|   +--------+----------+     +---^------------^---+ |        |
-+------------|--------------------|------------|-----+        |
-             |             443/tcp|            | 8008/tcp     |
-             |              ______|         +--v--------------+-----+
-             |             /                |                       |
-      +------v-------+    /                 | Matrix Synapse Server |
-      | Riot Web App |___/                  |                       |
-      +--------------+                      +------------+----------+
-                                                         | 5432/tcp
-                                              +----------v--------+
-                                              | PostgreSQL Server |
-                                              +-------------------+
+                        80,443,8448/tcp           25/tcp
+                              |                     |
++-----------------------------|------------+   +----+----+
+|                             |            |   | Postfix |
+|  Nginx server               |            |   +----^----+
+|                   +---------v----------+ |        |
+|                   | Reverse Proxy Site | |        |
+|                   +----------------^---+ |        |
++------------------------------------|-----+        |
+                                     | 8008/tcp     |
+                                  +--v--------------+-----+
+   +-------------------+ 5432/tcp |                       |
+   | PostgreSQL Server |<---------+ Matrix Synapse Server |
+   +-------------------+          |                       |
+                                  +-----------------------+
+```
+
+## Full installation
+
+The typical and recommended use case consists on deploy the following architecture (Note that this is the role's default behavior, with the addition of setting `synapse_installation_with_riot` and `synapse_with_turn` to `true` ):
+```
+         +~~~~~~~~~~~~~~~~~~~~~~~~~+
+         |      Riot Web App       |
+         | (Run on client browser) |<----<---+
+         +~~~~~~~~~~~~~~~~~~~~~~~~~+         |
+                                 ^           v
+                                 ^           |
+   GET on 80,443/tcp will return ^       443,8448/tcp          25/tcp
+                  |                          |                   |
++-----------------|--------------------------|-------------------|--------+
+|                 |                          |                   |        |
+|  +--------------|--------------------------|----------+   +----+----+   |
+|  | Nginx server |                          |          |   | Postfix |   |
+|  |   +----------v--------+                 |          |   +----^----+   |
+|  |   |   Standard Site   |     +-----------v--------+ |        |        |
+|  |   |  (Serve riot.js)  |     | Reverse Proxy Site | |        |        |
+|  |   +-------------------+     +----------------^---+ |        |        |
+|  +----------------------------------------------|-----+        |        |
+|                                                 | 8008/tcp     |        |
+|                                             +---v--------------+----+   |
+|              +-------------------+ 5432/tcp |                       |   |
+|              | PostgreSQL Server |<---------+ Matrix Synapse Server |   |
+|              +-------------------+          |                       |   |
+|                                             +-------------^---------+   |
+|                                              5349/tcp&upd |             |
+|                                                +----------v--------+    |
+|                                                |   coTURN Server   |    |
+|   Your Debian                                  +-------------------+    |
+|   based server                                                          |
++-------------------------------------------------------------------------+
 ```
 
 Requirements
@@ -55,15 +89,19 @@ Role Variables
 ```yaml
 # Our friendly and public domain name for the Synapse
 # server (the one that conforms user ID and room alias)
+# eg: my-organization.org (you would get @users:my-organization.org and #rooms:my-organization.org)
 synapse_server_name: "{{ inventory_hostname }}"
-# FQDN of the server that effectively hosting synapse
+
+# FQDN of the server that effectively hosting synapse (matrix endpoint)
+# eg: matrix.my-organization.org
 synapse_server_fqdn: "{{ inventory_hostname }}"
 
 # Location where synapse will be downloaded and installed from PyPI
 synapse_installation_path: /var/lib/matrix-synapse
 
 # present : Keep the same version once synapse was installed or
-# latest : update it if there is a new update available from pip
+# latest : upgrade it if there is a new upgrade available from pip
+# IF YOU PLAN TO UPGRADE, CHECK FIRST: https://github.com/matrix-org/synapse/blob/master/UPGRADE.rst
 synapse_pip_state: present
 
 # Enable sign up for new users
@@ -104,11 +142,28 @@ synapse_ldap_name: givenName
 synapse_ldap_bind_dn: ""
 synapse_ldap_bind_password: ""
 
+###  TURN
+synapse_with_turn: false
+synapse_turn_uri: "{{ synapse_server_fqdn }}"
+synapse_turn_port: 5349  # TURN listener TCP&UDP port: 3478(default) 5349(for TLS)
+synapse_turn_shared_secret: 5Eydym68SovsZkYLT8G9TOSCFwc2E6ijVLwL4FQgbukKPUalQZOe5gj22E9EhYrm # change it and put it from a vault
+synapse_turn_user_lifetime: 86400000
+synapse_turn_allow_guests: True
+synapse_turn_denied_peer_ip:
+  - 10.0.0.0-10.255.255.255
+  - 172.16.0.0-172.31.255.255
+  - 192.168.0.0-192.168.255.255
+synapse_turn_allowed_peer_ip:
+    # The turn server itself (special case) so that client->TURN->TURN->client flows work
+  - "{{ ansible_default_ipv4.address if(ansible_default_ipv4.address) is defined else '' }}"
+  - "{{ ansible_default_ipv6.address if(ansible_default_ipv6.address) is defined else '' }}"
+
 ### Riot Web App
 # Also install the riot web application along synapse
 synapse_installation_with_riot: false
 riot_installation_path: /var/www/riot
 # Our public domain name for the Riot Web client
+# eg: riot.my-organization.org
 riot_server_name: "{{ synapse_server_name }}"
 # Look https://github.com/vector-im/riot-web/releases to use the latest version
 riot_version: '1.5.15'
