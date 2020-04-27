@@ -1,0 +1,52 @@
+---
+
+# Based on https://github.com/matrix-org/synapse/blob/master/docs/turn-howto.md
+
+- name: "{{ 'Install' if(synapse_with_turn) else 'Unistall' }} CoTURN server"
+  apt:
+    name: coturn
+    state: "{{ 'present' if(synapse_with_turn) else 'absent' }}"
+    purge: "{{ omit if(synapse_with_turn) else true }}"
+
+- name: Configure CoTURN server
+  blockinfile:
+    path: /etc/turnserver.conf # By default, all directives in this file are commented
+    block: |
+      use-auth-secret
+      static-auth-secret={{ synapse_turn_shared_secret }}
+      realm={{ synapse_turn_uri }}
+      no-tcp-relay
+      user-quota=12
+      total-quota=1200
+
+      {% for item in synapse_turn_denied_peer_ip %}
+      {% if(item is defined and item | length > 0) %}
+      denied-peer-ip={{ item }}
+      {% endif %}
+      {% endfor %}
+
+      {% for item in synapse_turn_allowed_peer_ip %}
+      {% if(item is defined and item | length > 0) %}
+      allowed-peer-ip={{ item }}
+      {% endif %}
+      {% endfor %}
+
+  notify: restart coturn
+  when: synapse_with_turn | bool
+
+- name: Enable TURN integration
+  template:
+    src: "{{ synapse_confd_templates_src }}/turn.yaml.j2"
+    dest: "{{ synapse_installation_path }}/conf.d/turn.yaml"
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart matrix-synapse
+  when: synapse_with_turn | bool
+
+- name: Disable TURN integration
+  file:
+    path: "{{ synapse_installation_path }}/conf.d/turn.yaml"
+    state: absent
+  notify: restart matrix-synapse
+  when: not synapse_with_turn | bool
