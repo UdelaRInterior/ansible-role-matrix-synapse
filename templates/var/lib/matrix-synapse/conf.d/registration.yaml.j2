@@ -2,3 +2,7 @@
 
 # Enable registration for new users.
 enable_registration: {{ synapse_enable_registration }}
+
+enable_registration_captcha: {{ synapse_enable_registration_with_captcha }}
+recaptcha_public_key: "{{ synapse_recaptcha_public_key }}"
+recaptcha_private_key: "{{ synapse_recaptcha_private_key }}"

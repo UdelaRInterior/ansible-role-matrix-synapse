@@ -2,7 +2,7 @@
 
 # Based on https://github.com/matrix-org/synapse/blob/master/docs/turn-howto.md
 
-- name: "{{ 'Install' if(synapse_with_turn) else 'Unistall' }} CoTURN server"
+- name: "{{ 'Install' if(synapse_with_turn) else 'Uninstall' }} CoTURN server"
   apt:
     name: coturn
     state: "{{ 'present' if(synapse_with_turn) else 'absent' }}"
