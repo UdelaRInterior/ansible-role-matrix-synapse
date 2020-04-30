@@ -1,7 +1,6 @@
 # Ansibe Role Matrix Synapse
 
-[![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse)
-[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.matrix_synapse-blue.svg)](https://galaxy.ansible.com/udelarinterior/matrix_synapse)
+[![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse) [![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.matrix__synapse-blue.svg)](https://galaxy.ansible.com/udelarinterior/matrix_synapse) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/udelarinterior/ansible-role-matrix-synapse?label=release&logo=github&style=social) ![GitHub stars](https://img.shields.io/github/stars/udelarinterior/ansible-role-matrix-synapse?style=social) ![GitHub forks](https://img.shields.io/github/forks/udelarinterior/ansible-role-matrix-synapse?style=social)
 
 ### Automated installation from source with Nginx reverse proxy and PostgreSQL database
 
@@ -106,6 +105,10 @@ synapse_pip_state: present
 
 # Enable sign up for new users
 synapse_enable_registration: "false"
+synapse_enable_registration_with_captcha: false
+synapse_recaptcha_public_key: 2Q1toXytnLYl4WIrpWgvBJOaQS1Ym36tNAJnKcZY
+synapse_recaptcha_private_key: QgsOB0r79J9fpn8fAAnEIiITv7IMnjnUftdJwThs
+
 synapse_report_stats: 'no'
 
 # Local sources to templates and configuration files, useful

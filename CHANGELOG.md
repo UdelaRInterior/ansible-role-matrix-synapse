@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.5.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.5.0)
+
+* Now you can manage reCAPTCHA registration and tokens
+
 ## [v1.4.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.4.0)
 
 * Added CoTURN installation and integration
