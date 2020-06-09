@@ -111,6 +111,9 @@ synapse_recaptcha_private_key: QgsOB0r79J9fpn8fAAnEIiITv7IMnjnUftdJwThs
 
 synapse_report_stats: 'no'
 
+# The largest allowed upload size in bytes
+synapse_max_upload_size: 10M
+
 # Local sources to templates and configuration files, useful
 # for overwriting if you want to use your own templates in conf.d
 synapse_confd_templates_src: var/lib/matrix-synapse/conf.d
