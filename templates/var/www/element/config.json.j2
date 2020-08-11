@@ -2,7 +2,7 @@
     "default_server_config": {
         "m.homeserver": {
             "base_url": "https://{{ synapse_server_fqdn }}",
-            "server_name": "{{ riot_display_name }}"
+            "server_name": "{{ element_display_name }}"
         },
         "m.identity_server": {
             "base_url": "https://vector.im"
@@ -12,15 +12,15 @@
     "disable_guests": false,
     "disable_login_language_selector": false,
     "disable_3pid_login": false,
-    "brand": "{{ riot_display_name }}",
-{% if(riot_customatize_ui) %}
+    "brand": "{{ element_display_name }}",
+{% if(element_customatize_ui) %}
     "branding": {
-        "welcomeBackgroundUrl": "{{ riot_custom_branding.welcomeBackgroundUrl }}",
-        "authHeaderLogoUrl": "{{ riot_custom_branding.authHeaderLogoUrl }}",
-        "authFooterLinks": {{ riot_custom_branding.authFooterLinks | to_json }}
+        "welcomeBackgroundUrl": "{{ element_custom_branding.welcomeBackgroundUrl }}",
+        "authHeaderLogoUrl": "{{ element_custom_branding.authHeaderLogoUrl }}",
+        "authFooterLinks": {{ element_custom_branding.authFooterLinks | to_json }}
     },
 {% endif %}
-{% if(riot_welcome_page_template_src is defined and riot_welcome_page_template_src | length > 0) %}
+{% if(element_welcome_page_template_src is defined and element_welcome_page_template_src | length > 0) %}
     "embeddedPages": {
         "welcomeUrl": "custom-welcome.html"
     },
@@ -36,16 +36,17 @@
     ],
     "integrations_jitsi_widget_url": "https://scalar.vector.im/api/widgets/jitsi.html",
     "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
-    "defaultCountryCode": "{{ riot_default_country_code }}",
+    "defaultCountryCode": "{{ element_default_country_code }}",
     "showLabsSettings": false,
     "features": {
+        "feature_new_spinner": "labs",
         "feature_pinning": "labs",
         "feature_custom_status": "labs",
         "feature_custom_tags": "labs",
         "feature_state_counters": "labs"
     },
     "default_federate": true,
-    "default_theme": "{{ riot_default_theme }}",
+    "default_theme": "{{ element_default_theme }}",
     "roomDirectory": {
         "servers": [
             "matrix.org"
@@ -63,12 +64,12 @@
         "https://matrix-client.matrix.org": false
     },
     "settingDefaults": {
-        "breadcrumbs": true,
-{% if(riot_customatize_ui) %}
-        "custom_themes": {{ riot_custom_themes | to_nice_json }}
+        "breadcrumbs": true
+{% if(element_customatize_ui) %}
+        , "custom_themes": {{ element_custom_themes | to_nice_json }}
 {% endif %}
     },
     "jitsi": {
-        "preferredDomain": "{{ riot_jitsi_preferred_domain }}"
+        "preferredDomain": "{{ element_jitsi_preferred_domain }}"
     }
 }

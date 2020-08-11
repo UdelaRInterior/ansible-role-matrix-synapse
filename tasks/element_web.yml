@@ -1,0 +1,52 @@
+---
+
+## Based on https://github.com/vector-im/element-web/#getting-started
+
+- name: Create public directory for Element Web
+  file:
+    path: "{{ element_installation_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Download and unpack Element Web
+  unarchive:
+    remote_src: yes
+    src: https://github.com/vector-im/element-web/releases/download/v{{ element_version }}/riot-v{{ element_version }}.tar.gz
+    dest: "{{ element_installation_path }}"
+    owner: root
+    group: root
+
+- name: Set Element custom configuration
+  template:
+    src: var/www/element/config.json.j2
+    dest: "{{ element_installation_path }}/riot-v{{ element_version }}/config.json"
+    owner: root
+    group: root
+    mode: 0664
+
+- name: Set custom Element welcome page
+  template:
+    src: var/www/element/custom-welcome.html.j2
+    dest: "{{ element_installation_path }}/riot-v{{ element_version }}/custom-welcome.html"
+    owner: root
+    group: root
+    mode: 0664
+  when: element_customatize_ui | bool
+
+- name: Set nginx configuration file for Element Web
+  template:
+    src: "etc/nginx/sites-available/{{ 'reverse_proxy_and_element_web.j2' if (element_server_name == synapse_server_fqdn) else 'element_web.j2' }}"
+    dest: /etc/nginx/sites-available/{{ element_server_name }}.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart nginx
+
+- name: Ensure that Element site is enabled
+  file:
+    path: /etc/nginx/sites-enabled/{{ element_server_name }}.conf
+    src: /etc/nginx/sites-available/{{ element_server_name }}.conf
+    state: link
+  notify: restart nginx
