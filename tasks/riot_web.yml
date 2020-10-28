@@ -17,6 +17,7 @@
     dest: "{{ riot_installation_path }}"
     owner: root
     group: root
+    mode: 0755
 
 - name: Set Riot custom configuration
   template:

@@ -1,6 +1,6 @@
 # Ansibe Role Matrix Synapse
 
-[![Build Status](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.org/UdelaRInterior/ansible-role-matrix-synapse) [![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.matrix__synapse-blue.svg)](https://galaxy.ansible.com/udelarinterior/matrix_synapse) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/udelarinterior/ansible-role-matrix-synapse?label=release&logo=github&style=social) ![GitHub stars](https://img.shields.io/github/stars/udelarinterior/ansible-role-matrix-synapse?style=social) ![GitHub forks](https://img.shields.io/github/forks/udelarinterior/ansible-role-matrix-synapse?style=social)
+[![Build Status](https://travis-ci.com/UdelaRInterior/ansible-role-matrix-synapse.svg?branch=master)](https://travis-ci.com/github/UdelaRInterior/ansible-role-matrix-synapse) [![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.matrix__synapse-blue.svg)](https://galaxy.ansible.com/udelarinterior/matrix_synapse) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/udelarinterior/ansible-role-matrix-synapse?label=release&logo=github&style=social) ![GitHub stars](https://img.shields.io/github/stars/udelarinterior/ansible-role-matrix-synapse?style=social) ![GitHub forks](https://img.shields.io/github/forks/udelarinterior/ansible-role-matrix-synapse?style=social)
 
 ### Automated installation from source with Nginx reverse proxy and PostgreSQL database
 
