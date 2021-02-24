@@ -10,7 +10,7 @@ before_install: # https://docs.travis-ci.com/user/docker/#installing-a-newer-doc
 
 install:
   # Install test dependencies.
-  - python3 -m pip install ansible molecule yamllint ansible-lint testinfra docker
+  - pip install ansible molecule[docker] yamllint ansible-lint testinfra docker
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.

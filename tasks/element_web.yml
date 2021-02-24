@@ -17,6 +17,7 @@
     dest: "{{ element_installation_path }}"
     owner: root
     group: root
+    mode: 0755
 
 - name: Set Element custom configuration
   template:
