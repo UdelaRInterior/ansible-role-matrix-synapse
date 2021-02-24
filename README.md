@@ -51,30 +51,31 @@ The typical and recommended use case consists on deploy the following architectu
          | (Run on client browser) |<----<---+
          +~~~~~~~~~~~~~~~~~~~~~~~~~+         |
                                  ^           v
-                                 ^           |
-   GET on 80,443/tcp will return ^       443,8448/tcp          25/tcp
-                  |                          |                   |
-+-----------------|--------------------------|-------------------|--------+
-|                 |                          |                   |        |
-|  +--------------|--------------------------|----------+   +----+----+   |
-|  | Nginx server |                          |          |   | Postfix |   |
-|  |   +----------v--------+                 |          |   +----^----+   |
-|  |   |   Standard Site   |     +-----------v--------+ |        |        |
-|  |   |  (Serve riot.js)  |     | Reverse Proxy Site | |        |        |
-|  |   +-------------------+     +----------------^---+ |        |        |
-|  +----------------------------------------------|-----+        |        |
-|                                                 | 8008/tcp     |        |
-|                                             +---v--------------+----+   |
-|              +-------------------+ 5432/tcp |                       |   |
-|              | PostgreSQL Server |<---------+ Matrix Synapse Server |   |
-|              +-------------------+          |                       |   |
-|                                             +-------------^---------+   |
-|                                              5349/tcp&upd |             |
-|                                                +----------v--------+    |
-|                                                |   coTURN Server   |    |
-|   Your Debian                                  +-------------------+    |
-|   based server                                                          |
-+-------------------------------------------------------------------------+
+                                 ^           |                         3478,5349/tcp&upd
+   GET on 80,443/tcp will return ^       443,8448/tcp         25/tcp    49152:65535/udp
+                  |                          |                   |         |
++-----------------|--------------------------|-------------------|---------|------+
+|                 |                          |                   |         |      |
+|  +--------------|--------------------------|----------+   +----+----+    |      |
+|  | Nginx server |                          |          |   | Postfix |    |      |
+|  |   +----------v--------+                 |          |   +----^----+    |      |
+|  |   |   Standard Site   |     +-----------v--------+ |        |         |      |
+|  |   |  (Serve riot.js)  |     | Reverse Proxy Site | |        |         |      |
+|  |   +-------------------+     +----------------^---+ |        |         |      |
+|  +----------------------------------------------|-----+        |         |      |
+|                                                 | 8008/tcp     |         |      |
+|                                             +---v--------------+----+    |      |
+|              +-------------------+ 5432/tcp |                       |    |      |
+|              | PostgreSQL Server |<---------+ Matrix Synapse Server |    |      |
+|              +-------------------+          |                       |    |      |
+|                                             +--------------------^--+    |      |
+|                                                                  |       |      |
+|                                                3478,5349/tcp&upd |       |      |
+|                                                      +-----------v-------v-+    |
+|                                                      |    coTURN Server    |    |
+|   Your Debian                                        +---------------------+    |
+|   based server                                                                  |
++---------------------------------------------------------------------------------+
 ```
 
 Requirements
@@ -151,7 +152,7 @@ synapse_ldap_bind_password: ""
 ###  TURN
 synapse_with_turn: false
 synapse_turn_uri: "{{ synapse_server_fqdn }}"
-synapse_turn_port: 5349  # TURN listener TCP&UDP port: 3478(default) 5349(for TLS)
+synapse_turn_port: 3478  # TURN listener TCP&UDP port: 3478(default) 5349(for TLS)
 synapse_turn_shared_secret: 5Eydym68SovsZkYLT8G9TOSCFwc2E6ijVLwL4FQgbukKPUalQZOe5gj22E9EhYrm # change it and put it from a vault
 synapse_turn_user_lifetime: 86400000
 synapse_turn_allow_guests: True

@@ -34,6 +34,13 @@
   notify: restart coturn
   when: synapse_with_turn | bool
 
+- name: Make sure the CoTURN service is always running at system startup
+  lineinfile:
+    path: /etc/default/coturn
+    regexp: '^TURNSERVER_ENABLED='
+    line: TURNSERVER_ENABLED=1
+  when: synapse_with_turn | bool
+
 - name: Enable TURN integration
   template:
     src: "{{ synapse_confd_templates_src }}/turn.yaml.j2"

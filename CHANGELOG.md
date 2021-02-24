@@ -1,5 +1,10 @@
 # Change Log
 
+
+## [v2.0.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v2.0.0)
+
+* Fix coTURN configuration issues. Now the default value of `synapse_turn_port` is set to at 3478
+
 ## [v1.6.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.6.0)
 
 * Now you can manage max upload file size
