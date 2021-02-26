@@ -1,5 +1,10 @@
 # Change Log
 
+
+## [v2.0.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v2.0.0)
+
+* [Riot is now Element!](https://element.io/blog/welcome-to-element/). Due to the rebrand of the web client, the documentation and all variables `riot_*` were renamed to `element_*` to keep up to date.
+
 ## [v1.6.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v1.6.0)
 
 * Now you can manage max upload file size

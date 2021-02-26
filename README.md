@@ -16,7 +16,7 @@ Optionally this role allows provisioning a CoTURN installation to [enable VoIP r
 
 Through authentication providers it's possible to integrate decentralized logins. This role implements integration with LDAP optionally.
 
-Finally, this role also allows you to serve the [Riot web](https://riot.im/app/#/welcome) application together with Synapse. This feature is disabled by default (`synapse_installation_with_riot: false`) due to the [project security recommendation](https://github.com/vector-im/riot-web/#important-security-note). But serve Riot is very useful. Fully recommended if you have the posibility to destiny different domain names for Synapse and Riot (`synapse_server_name` != `riot_server_name`). Otherwise you can install both in the same domain name at your own risk (`synapse_server_name` == `riot_server_name`).
+Finally, this role also allows you to serve the [Element](https://app.element.io/) (formerly Riot) web application together with Synapse. This feature is disabled by default (`synapse_installation_with_element: false`) due to the [project security recommendation](https://github.com/vector-im/element-web/#important-security-note). But serve Element is very useful. Fully recommended if you have the posibility to destiny different domain names for Synapse and Element (`synapse_server_name` != `element_server_name`). Otherwise you can install both in the same domain name at your own risk (`synapse_server_name` == `element_server_name`).
 
 Deployment diagram
 ------------
@@ -44,10 +44,10 @@ The essential installation to have your own matrix homeserver ready for producti
 
 ## Full installation
 
-The typical and recommended use case consists on deploy the following architecture (Note that this is the role's default behavior, with the addition of setting `synapse_installation_with_riot` and `synapse_with_turn` to `true` ):
+The typical and recommended use case consists on deploy the following architecture (Note that this is the role's default behavior, with the addition of setting `synapse_installation_with_element` and `synapse_with_turn` to `true` ):
 ```
          +~~~~~~~~~~~~~~~~~~~~~~~~~+
-         |      Riot Web App       |
+         |    Element Web App      |
          | (Run on client browser) |<----<---+
          +~~~~~~~~~~~~~~~~~~~~~~~~~+         |
                                  ^           v
@@ -60,7 +60,7 @@ The typical and recommended use case consists on deploy the following architectu
 |  | Nginx server |                          |          |   | Postfix |   |
 |  |   +----------v--------+                 |          |   +----^----+   |
 |  |   |   Standard Site   |     +-----------v--------+ |        |        |
-|  |   |  (Serve riot.js)  |     | Reverse Proxy Site | |        |        |
+|  |   |  (Serve app .js)  |     | Reverse Proxy Site | |        |        |
 |  |   +-------------------+     +----------------^---+ |        |        |
 |  +----------------------------------------------|-----+        |        |
 |                                                 | 8008/tcp     |        |
@@ -102,6 +102,10 @@ synapse_installation_path: /var/lib/matrix-synapse
 # latest : upgrade it if there is a new upgrade available from pip
 # IF YOU PLAN TO UPGRADE, CHECK FIRST: https://github.com/matrix-org/synapse/blob/master/UPGRADE.rst
 synapse_pip_state: present
+
+# If you want to install specific version of matrix-synapse
+# change it for something like: "matrix-synapse==1.12.4"
+matrix_synapse_pip_pkg: "matrix-synapse"
 
 # Enable sign up for new users
 synapse_enable_registration: "false"
@@ -164,41 +168,41 @@ synapse_turn_allowed_peer_ip:
   - "{{ ansible_default_ipv4.address if(ansible_default_ipv4.address) is defined else '' }}"
   - "{{ ansible_default_ipv6.address if(ansible_default_ipv6.address) is defined else '' }}"
 
-### Riot Web App
-# Also install the riot web application along synapse
-synapse_installation_with_riot: false
-riot_installation_path: /var/www/riot
-# Our public domain name for the Riot Web client
-# eg: riot.my-organization.org
-riot_server_name: "{{ synapse_server_name }}"
-# Look https://github.com/vector-im/riot-web/releases to use the latest version
-riot_version: '1.5.15'
-riot_jitsi_preferred_domain: jitsi.riot.im
+### Element Web App
+# Also install the Element web application along synapse
+synapse_installation_with_element: false
+element_installation_path: /var/www/element
+# Our public domain name for the Element Web client
+# eg: element.my-organization.org
+element_server_name: "{{ synapse_server_name }}"
+# Look https://github.com/vector-im/element-web/releases to use the latest version
+element_version: '1.7.3'
+element_jitsi_preferred_domain: jitsi.riot.im
 # Name to display for the server
-riot_display_name: 'My Org Chat'
-riot_default_theme: light # 'light', 'dark' or your own 'custom-${theme-name}' (see riot_custom_themes below)
-riot_default_country_code: GB
+element_display_name: 'My Org Chat'
+element_default_theme: light # 'light', 'dark' or your own 'custom-${theme-name}' (see element_custom_themes below)
+element_default_country_code: GB
 
-### Riot UI customization
-riot_customatize_ui: false
+### Element UI customization
+element_customatize_ui: false
 
-riot_welcome_page_template_src: var/www/riot/custom-welcome.html.j2   # Leave it empty if you don't want to overwrite the default Riot welcome page
-riot_welcome_logo_url: welcome/images/logo.svg
-riot_welcome_title: 'Welcome to Riot.im'
-riot_welcome_description: 'Decentralised, encrypted chat &amp; collaboration powered by [matrix]'
+element_welcome_page_template_src: var/www/element/custom-welcome.html.j2   # Leave it empty if you don't want to overwrite the default Element welcome page
+element_welcome_logo_url: welcome/images/logo.svg
+element_welcome_title: 'Welcome to Element!'
+element_welcome_description: 'Decentralised, encrypted chat &amp; collaboration powered by [matrix]'
 
-riot_custom_branding:
-  welcomeBackgroundUrl: themes/riot/img/backgrounds/valley.jpg
-  authHeaderLogoUrl: themes/riot/img/logos/riot-im-logo-black-text.svg
+element_custom_branding:
+  welcomeBackgroundUrl: themes/element/img/backgrounds/lake.jpg
+  authHeaderLogoUrl: themes/element/img/logos/element-logo.svg
   authFooterLinks:
     - text: blog
-      url: https://blog.riot.im/
+      url: https://element.io/blog
     - text: twitter
-      url: https://twitter.com/@RiotChat
+      url: https://twitter.com/element_hq
     - text: github
       url: https://github.com/vector-im/riot-web
 
-riot_custom_themes:
+element_custom_themes:
   - name: "Deep Purple"
     is_dark: true
     colors:
