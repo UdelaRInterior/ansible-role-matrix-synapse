@@ -39,7 +39,7 @@
 
 - name: Install or update Synapse using pip
   pip:
-    name: matrix-synapse
+    name: "{{ matrix_synapse_pip_pkg }}"
     chdir: "{{ synapse_installation_path }}"
     virtualenv: "{{ synapse_installation_path }}/env"
     virtualenv_python: python3

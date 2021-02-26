@@ -1,22 +1,22 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name {{ riot_server_name }};
+    server_name {{ element_server_name }};
     return 301 https://$host$request_uri;
 
-    access_log  /var/log/nginx/{{ riot_server_name }}.access.log;
-    error_log  /var/log/nginx/{{ riot_server_name }}.error.log;
+    access_log  /var/log/nginx/{{ element_server_name }}.access.log;
+    error_log  /var/log/nginx/{{ element_server_name }}.error.log;
 }
 
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    server_name {{ riot_server_name }};
+    server_name {{ element_server_name }};
 
-    root {{ riot_installation_path }}/riot-v{{ riot_version }};
+    root {{ element_installation_path }}/riot-v{{ element_version }};
 
-    access_log  /var/log/nginx/{{ riot_server_name }}.access.log;
-    error_log  /var/log/nginx/{{ riot_server_name }}.error.log;
+    access_log  /var/log/nginx/{{ element_server_name }}.access.log;
+    error_log  /var/log/nginx/{{ element_server_name }}.error.log;
 
     location /_matrix {
         proxy_pass http://localhost:8008;

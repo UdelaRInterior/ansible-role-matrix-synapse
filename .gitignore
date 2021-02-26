@@ -1,3 +1,3 @@
 meta/.galaxy_install_info
-molecule/default/tests/*.pyc
-molecule/default/tests/__pycache__/*
+molecule/*/tests/*.pyc
+molecule/*/tests/__pycache__/*
