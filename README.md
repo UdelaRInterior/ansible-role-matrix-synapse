@@ -103,6 +103,10 @@ synapse_installation_path: /var/lib/matrix-synapse
 # IF YOU PLAN TO UPGRADE, CHECK FIRST: https://github.com/matrix-org/synapse/blob/master/UPGRADE.rst
 synapse_pip_state: present
 
+# If you want to install specific version of matrix-synapse
+# change it for something like: "matrix-synapse==1.12.4"
+matrix_synapse_pip_pkg: "matrix-synapse"
+
 # Enable sign up for new users
 synapse_enable_registration: "false"
 synapse_enable_registration_with_captcha: false
