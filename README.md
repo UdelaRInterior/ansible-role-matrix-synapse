@@ -18,6 +18,8 @@ Through authentication providers it's possible to integrate decentralized logins
 
 Finally, this role also allows you to serve the [Element](https://app.element.io/) (formerly Riot) web application together with Synapse. This feature is disabled by default (`synapse_installation_with_element: false`) due to the [project security recommendation](https://github.com/vector-im/element-web/#important-security-note). But serve Element is very useful. Fully recommended if you have the posibility to destiny different domain names for Synapse and Element (`synapse_server_name` != `element_server_name`). Otherwise you can install both in the same domain name at your own risk (`synapse_server_name` == `element_server_name`).
 
+Since version 3.0.0, this role is compatible with [Element Web Chat version 1.7.15](https://github.com/vector-im/element-web/releases/tag/v1.7.15) and above. But is not compatible with Riot Web Chat (Versions 1.7.14 and olders).
+
 Deployment diagram
 ------------
 
