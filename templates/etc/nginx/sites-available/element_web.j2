@@ -13,7 +13,7 @@ server {
     listen [::]:443 ssl;
     server_name {{ element_server_name }};
 
-    root {{ element_installation_path }}/riot-v{{ element_version }};
+    root {{ element_installation_path }}/element-v{{ element_version }};
 
     access_log  /var/log/nginx/{{ element_server_name }}.access.log;
     error_log  /var/log/nginx/{{ element_server_name }}.error.log;

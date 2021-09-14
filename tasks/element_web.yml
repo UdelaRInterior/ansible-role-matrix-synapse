@@ -13,7 +13,7 @@
 - name: Download and unpack Element Web
   unarchive:
     remote_src: yes
-    src: https://github.com/vector-im/element-web/releases/download/v{{ element_version }}/riot-v{{ element_version }}.tar.gz
+    src: https://github.com/vector-im/element-web/releases/download/v{{ element_version }}/element-v{{ element_version }}.tar.gz
     dest: "{{ element_installation_path }}"
     owner: root
     group: root
@@ -22,7 +22,7 @@
 - name: Set Element custom configuration
   template:
     src: var/www/element/config.json.j2
-    dest: "{{ element_installation_path }}/riot-v{{ element_version }}/config.json"
+    dest: "{{ element_installation_path }}/element-v{{ element_version }}/config.json"
     owner: root
     group: root
     mode: 0664
@@ -30,7 +30,7 @@
 - name: Set custom Element welcome page
   template:
     src: var/www/element/custom-welcome.html.j2
-    dest: "{{ element_installation_path }}/riot-v{{ element_version }}/custom-welcome.html"
+    dest: "{{ element_installation_path }}/element-v{{ element_version }}/custom-welcome.html"
     owner: root
     group: root
     mode: 0664

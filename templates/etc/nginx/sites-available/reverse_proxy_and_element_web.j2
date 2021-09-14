@@ -13,7 +13,7 @@ server {
     listen [::]:443 ssl;
     server_name {{ synapse_server_fqdn }};
 
-    root {{ element_installation_path }}/riot-v{{ element_version }};
+    root {{ element_installation_path }}/element-v{{ element_version }};
 
     access_log  /var/log/nginx/{{ synapse_server_fqdn }}.access.log;
     error_log  /var/log/nginx/{{ synapse_server_fqdn }}.error.log;
