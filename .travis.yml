@@ -13,8 +13,9 @@ install:
   - pip install ansible molecule[docker] yamllint ansible-lint testinfra docker
 
 before_script:
-  # Use actual Ansible Galaxy role name for the project directory.
+  - export ANSIBLE_ROLES_PATH=/home/travis/build/UdelaRInterior
   - ansible-galaxy install geerlingguy.certbot
+  # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
   - mv ansible-role-matrix-synapse udelarinterior.matrix_synapse
   - cd udelarinterior.matrix_synapse
