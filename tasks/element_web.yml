@@ -21,7 +21,7 @@
 
 - name: Set Element custom configuration
   template:
-    src: var/www/element/config.json.j2
+    src: "{{ element_configuration_template_src }}"
     dest: "{{ element_installation_path }}/element-v{{ element_version }}/config.json"
     owner: root
     group: root
@@ -29,12 +29,15 @@
 
 - name: Set custom Element welcome page
   template:
-    src: var/www/element/custom-welcome.html.j2
+    src: "{{ element_welcome_page_template_src }}"
     dest: "{{ element_installation_path }}/element-v{{ element_version }}/custom-welcome.html"
     owner: root
     group: root
     mode: 0664
-  when: element_customatize_ui | bool
+  when:
+    - element_customatize_ui | bool
+    - element_welcome_page_template_src is defined
+    - element_welcome_page_template_src | length > 0
 
 - name: Set nginx configuration file for Element Web
   template:

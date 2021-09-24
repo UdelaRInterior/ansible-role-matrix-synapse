@@ -120,7 +120,11 @@ element_installation_path: /var/www/element
 element_server_name: "{{ synapse_server_name }}"
 
 # Look https://github.com/vector-im/element-web/releases to use the latest version
-element_version: '1.7.3'
+element_version: '1.8.5'
+
+# Local source to Element config.json templates file.
+# Useful for overwriting if you want to use your own templates
+element_configuration_template_src: var/www/element/config.json.j2
 
 element_jitsi_preferred_domain: jitsi.riot.im
 
@@ -135,7 +139,8 @@ element_default_country_code: GB
 
 element_customatize_ui: false
 
-element_welcome_page_template_src: var/www/element/custom-welcome.html.j2   # Leave it empty if you don't want to overwrite the default Element welcome page
+# Leave it empty if you don't want to overwrite the default Element welcome page
+element_welcome_page_template_src: '' # eg: 'var/www/element/custom-welcome.html.j2'
 element_welcome_logo_url: welcome/images/logo.svg
 element_welcome_title: 'Welcome to Element!'
 element_welcome_description: 'Decentralised, encrypted chat &amp; collaboration powered by [matrix]'
@@ -144,12 +149,12 @@ element_custom_branding:
   welcomeBackgroundUrl: themes/element/img/backgrounds/lake.jpg
   authHeaderLogoUrl: themes/element/img/logos/element-logo.svg
   authFooterLinks:
-    - text: blog
+    - text: Blog
       url: https://element.io/blog
-    - text: twitter
+    - text: Twitter
       url: https://twitter.com/element_hq
-    - text: github
-      url: https://github.com/vector-im/riot-web
+    - text: GitHub
+      url: https://github.com/vector-im/element-web
 
 element_custom_themes:
   - name: "Deep Purple"
