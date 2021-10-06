@@ -13,15 +13,27 @@ lint: |
 
 platforms:
   - name: stretch
-    image: quay.io/paulfantom/molecule-systemd:debian-9
+    image: geerlingguy/docker-debian9-ansible
+    command: /sbin/init
     pre_build_image: true
     privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   - name: buster
-    image: quay.io/paulfantom/molecule-systemd:debian-10
+    image: geerlingguy/docker-debian10-ansible
+    command: /sbin/init
     pre_build_image: true
     privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
