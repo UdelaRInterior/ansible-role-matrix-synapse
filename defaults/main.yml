@@ -120,7 +120,7 @@ element_installation_path: /var/www/element
 element_server_name: "{{ synapse_server_name }}"
 
 # Look https://github.com/vector-im/element-web/releases to use the latest version
-element_version: '1.7.3'
+element_version: '1.7.15'
 
 element_jitsi_preferred_domain: jitsi.riot.im
 

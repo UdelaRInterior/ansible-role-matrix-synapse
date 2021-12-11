@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.0.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.0.0)
+
+* Version 2.0.0 of the role is not able to install Element web app from version 1.7.15. Since version 3.0.0, this role is compatible with [Element web app version 1.7.15](https://github.com/vector-im/element-web/releases/tag/v1.7.15) and above, but is not compatible with Riot/Element versions 1.7.14 and olders.
 
 ## [v2.0.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v2.0.0)
 
