@@ -7,11 +7,18 @@ server {
     access_log  /var/log/nginx/{{ synapse_server_fqdn }}.access.log;
     error_log  /var/log/nginx/{{ synapse_server_fqdn }}.error.log;
 
-    client_max_body_size  {{ synapse_max_upload_size }};
-
-    location /_matrix {
+    location ~* ^(\/_matrix|\/_synapse\/client{% if synapse_enable_admin_endpoints %}|\/_synapse\/admin{% endif %}) {
+        # note: do not add a path (even a single /) after the port in `proxy_pass`,
+        # otherwise nginx will canonicalise the URI and cause signature verification
+        # errors.
         proxy_pass http://localhost:8008;
         proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+
+        # Nginx by default only allows file uploads up to 1M in size
+        # Increase client_max_body_size to match max_upload_size defined in homeserver.yaml
+        client_max_body_size {{ synapse_max_upload_size }};
     }
 
     ssl_certificate /etc/letsencrypt/live/{{ synapse_server_fqdn }}/fullchain.pem;
@@ -28,11 +35,18 @@ server {
     access_log  /var/log/nginx/{{ synapse_server_fqdn }}.federation.access.log;
     error_log  /var/log/nginx/{{ synapse_server_fqdn }}.federation.error.log;
 
-    client_max_body_size  {{ synapse_max_upload_size }};
-
-    location / {
+    location ~* ^(\/_matrix|\/_synapse\/client{% if synapse_enable_admin_endpoints %}|\/_synapse\/admin{% endif %}) {
+        # note: do not add a path (even a single /) after the port in `proxy_pass`,
+        # otherwise nginx will canonicalise the URI and cause signature verification
+        # errors.
         proxy_pass http://localhost:8008;
         proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+
+        # Nginx by default only allows file uploads up to 1M in size
+        # Increase client_max_body_size to match max_upload_size defined in homeserver.yaml
+        client_max_body_size {{ synapse_max_upload_size }};
     }
 
     ssl_certificate /etc/letsencrypt/live/{{ synapse_server_fqdn }}/fullchain.pem;
