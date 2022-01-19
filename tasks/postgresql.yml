@@ -7,7 +7,7 @@
     name:
       - postgresql
       - libpq-dev
-      - python-psycopg2
+      - "{{ 'python-psycopg2' if(ansible_distribution_major_version is version('10', '<=')) else 'python3-psycopg2' }}"
     state: present
 
 - name: Ensure PostgreSQL service is started
