@@ -121,6 +121,12 @@ synapse_report_stats: 'no'
 # The largest allowed upload size in bytes
 synapse_max_upload_size: 10M
 
+# Endpoints for administering your Synapse instance are placed under /_synapse/admin. These require
+# authentication through an access token of an admin user. However as access to these endpoints grants
+# the caller a lot of power, we do not recommend exposing them to the public internet without good reason.
+# See https://matrix-org.github.io/synapse/latest/reverse_proxy.html
+synapse_enable_admin_endpoints: false
+
 # Local sources to templates and configuration files, useful
 # for overwriting if you want to use your own templates in conf.d
 synapse_confd_templates_src: var/lib/matrix-synapse/conf.d

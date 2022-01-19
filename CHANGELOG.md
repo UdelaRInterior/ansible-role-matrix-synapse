@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.2.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.2.0)
+
+* Now the nginx reverse proxy settings are based on the [official Matrix Synapse documentation](https://matrix-org.github.io/synapse/latest/reverse_proxy.html). Additionally, the `synapse_enable_admin_endpoints` boolean variable was added to enable or disable publishing of admin API endpoints.
+
 ## [v3.1.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.1.0)
 
 * Small change on python package name and the role now support Debian Bullseye. The psycopg2 package name is inferred from the system to maintain backward compatibility with Stretch and Buster.
