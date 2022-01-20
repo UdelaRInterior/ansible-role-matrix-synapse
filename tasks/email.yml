@@ -5,6 +5,7 @@
     apt:
       name: postfix
       state: present
+    when: synapse_smtp_host == 'localhost'
 
   - name: Configure postfix
     template:
@@ -14,6 +15,7 @@
       owner: root
       group: root
     notify: restart postfix
+    when: synapse_smtp_host == 'localhost'
 
   - name: Configure Synapse mailing
     template:
