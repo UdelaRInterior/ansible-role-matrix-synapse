@@ -8,10 +8,14 @@
 #
 email:
 #  enable_notifs: true
-  smtp_host: "localhost"
-  smtp_port: 25 # SSL: 465, STARTTLS: 587
-#   smtp_user: "exampleusername"
-#   smtp_pass: "examplepassword"
+  smtp_host: "{{ synapse_smtp_host | default('localhost') }}"
+  smtp_port: {{ synapse_smtp_port | default('25') }}  # SSL: 465, STARTTLS: 587
+{% if synapse_smtp_user is defined %}
+  smtp_user: "{{ synapse_smtp_user }}"
+{% endif %}
+{% if synapse_smtp_pass is defined %}
+  smtp_pass: "{{ synapse_smtp_pass }}"
+{% endif %}
 #   require_transport_security: false
   notif_from: "{{ synapse_email_notif_from }}"
 #   app_name: Matrix

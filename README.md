@@ -10,7 +10,7 @@ Also based on the recommendation, a Nginx reverse proxy and valid Let's Encrypt 
 
 As a database server, it is possible to use PostgreSQL (recommended for production environments) and SQLite (recommended for small or testing environments). The role default option is PostgreSQL, contemplating its installation and configuration.
 
-A simple Postfix installation makes it possible to send notifications, account recovery, etc. via email. With easily customizable templates through variables.
+A simple Postfix local installation or a external SMTP server makes it possible to send notifications, account recovery, etc. via email. With easily customizable templates through variables.
 
 Optionally this role allows provisioning a CoTURN installation to [enable VoIP relaying on your matrix homeserver with TURN](https://github.com/matrix-org/synapse/blob/master/docs/turn-howto.md).
 
@@ -142,8 +142,14 @@ synapse_psql_password: secret-password
 ### Email
 # If email is not configured, password reset, registration and notifications via email will be disabled.
 synapse_email_enable: true
+
+synapse_smtp_host: localhost
+synapse_smtp_port: 25
+# synapse_smtp_user: synapse
+# synapse_smtp_pass: secret
+
 synapse_email_hostname: "{{ synapse_server_fqdn }}"
-synapse_email_notif_from: "YourFriendlyhomeserver" # without spaces
+synapse_email_notif_from: "MyOrganization Matrix Homeserver <matrix@myorganization.com>"
 
 synapse_email_with_custom_templates: false
 # If true, remember use a customized version of the template conf.d/email.yaml.j2 to reference them

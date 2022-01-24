@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.3.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.3.0)
+
+* Now it is possible to configure an external mail server to send notifications. Postfix is kept as the default option but it is not installed and configured unnecessarily if it will not be used.
+
 ## [v3.2.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.2.0)
 
 * Now the nginx reverse proxy settings are based on the [official Matrix Synapse documentation](https://matrix-org.github.io/synapse/latest/reverse_proxy.html). Additionally, the `synapse_enable_admin_endpoints` boolean variable was added to enable or disable publishing of admin API endpoints.

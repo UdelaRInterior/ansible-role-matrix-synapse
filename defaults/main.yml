@@ -67,8 +67,14 @@ synapse_psql_password: secret-password
 
 # If email is not configured, password reset, registration and notifications via email will be disabled.
 synapse_email_enable: true
+
+synapse_smtp_host: localhost
+synapse_smtp_port: 25
+# synapse_smtp_user: synapse
+# synapse_smtp_pass: secret
+
 synapse_email_hostname: "{{ synapse_server_fqdn }}"
-synapse_email_notif_from: "YourFriendlyhomeserver" # without spaces
+synapse_email_notif_from: "MyOrganization Matrix Homeserver <matrix@myorganization.com>"
 
 synapse_email_with_custom_templates: false
 # If true, remember use a customized version of the template conf.d/email.yaml.j2 to reference them
