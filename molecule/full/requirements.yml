@@ -1,0 +1,3 @@
+# Install a role at a specific tag from GitHub
+roles:
+   - name: geerlingguy.certbot

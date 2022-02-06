@@ -3,6 +3,7 @@ galaxy_info:
   author: Santiago Martínez (@santiagomr)
   description: Role to install and configure Matrix Synapse server from source
   company: Red Unidades Informáticas UdelaR Interior (@UdelaRInterior)
+  namespace: udelarinterior
 
   license: GPLv3
 
