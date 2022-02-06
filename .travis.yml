@@ -14,7 +14,6 @@ install:
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
-  - ansible-galaxy install geerlingguy.certbot
   - cd ../
   - mv ansible-role-matrix-synapse udelarinterior.matrix_synapse
   - cd udelarinterior.matrix_synapse
