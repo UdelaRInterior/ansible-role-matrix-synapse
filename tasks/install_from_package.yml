@@ -1,0 +1,15 @@
+---
+- name: Add matrix signing key
+  ansible.builtin.apt_key:
+    url: https://packages.matrix.org/debian/matrix-org-archive-keyring.gpg
+    state: present
+
+- name: Add matrix repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://packages.matrix.org/debian/ {{ ansible_distribution_release }} main" 
+    state: present
+
+- name: Install matrix packages
+  ansible.builtin.apt:
+    name: matrix-synapse-py3
+    state: installed
