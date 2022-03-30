@@ -2,6 +2,7 @@
 
 - block:
   - name: Install LDAP authentication provider module
+  when: synapse_installation_method == "source"
     pip:
       name: matrix-synapse-ldap3
       chdir: "{{ synapse_installation_path }}"
