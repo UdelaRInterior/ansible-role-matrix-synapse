@@ -5,24 +5,6 @@
     path: "{{ synapse_installation_path }}/homeserver.yaml"
   register: config_file
 
-- name: Generate a configuration file
-  shell:
-    source {{ synapse_installation_path }}/env/bin/activate &&
-    python -m synapse.app.homeserver \
-      --server-name {{ synapse_server_name }} \
-      --config-path homeserver.yaml \
-      --generate-config \
-      --report-stats={{ synapse_report_stats }}
-  args:
-    chdir: "{{ synapse_installation_path }}"
-    executable: /bin/bash
-  when: not config_file.stat.exists
-
-- name: Create custom config folder
-  file:
-    path: "{{ synapse_installation_path }}/conf.d"
-    state: directory
-    mode: 0755
 
 - name: Enable matrix-synapse.service
   systemd:
