@@ -2,7 +2,7 @@
 
 - name: Check if homeserver config file already exists
   stat:
-    path: "{{ synapse_installation_path }}/homeserver.yaml"
+    path: "{{ synapse_config_path }}/homeserver.yaml"
   register: config_file
 
 
@@ -14,7 +14,7 @@
 - name: Set custom configurations
   template:
     src: "{{ synapse_confd_templates_src }}/{{ item }}.yaml.j2"
-    dest: "{{ synapse_installation_path }}/conf.d/{{ item }}.yaml"
+    dest: "{{ synapse_config_path }}/conf.d/{{ item }}.yaml"
     mode: 0644
     owner: root
     group: root

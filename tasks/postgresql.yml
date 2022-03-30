@@ -45,7 +45,7 @@
 - name: Enable/disable PostgreSQL Database
   template:
     src: "{{ synapse_confd_templates_src }}/database.yaml.j2"
-    dest: "{{ synapse_installation_path }}/conf.d/database.yaml"
+    dest: "{{ synapse_config_path }}/conf.d/database.yaml"
     mode: 0644
     owner: root
     group: root
