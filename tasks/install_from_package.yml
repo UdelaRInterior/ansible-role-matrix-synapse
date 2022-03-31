@@ -12,4 +12,4 @@
 - name: Install matrix packages
   ansible.builtin.apt:
     name: matrix-synapse-py3
-    state: installed
+    state: present
