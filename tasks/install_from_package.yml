@@ -13,3 +13,7 @@
   ansible.builtin.apt:
     name: matrix-synapse-py3
     state: present
+
+- name: Override conf directory path variable
+  ansible.builtin.set_fact:
+    synapse_config_path: "/etc/matrix-synapse/"
