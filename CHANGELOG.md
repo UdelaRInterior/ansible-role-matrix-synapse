@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.4.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.4.0)
+
+* Some improvements have been implemented in the role that allow configuring the coTURN server with greater flexibility when:
+  * is located behind a NAT
+  * it is desired to use TLS certificates
+  * it is desired to customize the communication ports used
+
 ## [v3.3.0](https://github.com/UdelaRInterior/ansible-role-matrix-synapse/tree/v3.3.0)
 
 * Now it is possible to configure an external mail server to send notifications. Postfix is kept as the default option but it is not installed and configured unnecessarily if it will not be used.
