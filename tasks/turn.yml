@@ -31,6 +31,22 @@
       {% endif %}
       {% endfor %}
 
+      {% for item in synapse_turn_external_ip %}
+      {% if(item is defined and item | length > 0) %}
+      external-ip={{ item }}
+      {% endif %}
+      {% endfor %}
+
+      listening-port={{ synapse_turn_port }}
+      {% if(synapse_turn_tls_port is defined) %}
+      tls-listening-port={{ synapse_turn_tls_port }}
+      cert={{ synapse_turn_tls_cert }}
+      pkey={{ synapse_turn_tls_pkey }}
+      {% endif %}
+
+      min-port={{ synapse_turn_communication_min_port }}
+      max-port={{ synapse_turn_communication_max_port }}
+
   notify: restart coturn
   when: synapse_with_turn | bool
 

@@ -170,7 +170,10 @@ synapse_ldap_bind_password: ""
 ###  TURN
 synapse_with_turn: false
 synapse_turn_uri: "{{ synapse_server_fqdn }}"
-synapse_turn_port: 3478  # TURN listener TCP&UDP port: 3478(default) 5349(for TLS)
+synapse_turn_port: 3478
+# synapse_turn_tls_port: 5349  (Undefined so that the role doesn't force to set up TLS on TURN)
+synapse_turn_communication_min_port: 49152
+synapse_turn_communication_max_port: 65535
 synapse_turn_shared_secret: 5Eydym68SovsZkYLT8G9TOSCFwc2E6ijVLwL4FQgbukKPUalQZOe5gj22E9EhYrm # change it and put it from a vault
 synapse_turn_user_lifetime: 86400000
 synapse_turn_allow_guests: True
@@ -182,6 +185,10 @@ synapse_turn_allowed_peer_ip:
     # The turn server itself (special case) so that client->TURN->TURN->client flows work
   - "{{ ansible_default_ipv4.address if(ansible_default_ipv4.address) is defined else '' }}"
   - "{{ ansible_default_ipv6.address if(ansible_default_ipv6.address) is defined else '' }}"
+synapse_turn_external_ip: []
+  # - 1.2.3.4/172.16.0.1    # Indicate the public IP(s) and their corresponding private IP when the TURN server is behind a NAT
+synapse_turn_tls_cert: "/etc/letsencrypt/live/{{ synapse_turn_uri }}/cert.pem"
+synapse_turn_tls_pkey: "/etc/letsencrypt/live/{{ synapse_turn_uri }}/privkey.pem"
 
 ### Element Web App
 # Also install the Element web application along synapse

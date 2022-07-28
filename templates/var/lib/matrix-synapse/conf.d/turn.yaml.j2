@@ -1,6 +1,6 @@
 ## TURN ##
 
-turn_uris: [ "turn:{{ synapse_turn_uri }}{% if synapse_turn_port != 3478 %}:{{ synapse_turn_port }}{% endif%}?transport=udp", "turn:{{ synapse_turn_uri }}{% if synapse_turn_port != 3478 %}:{{ synapse_turn_port }}{% endif%}?transport=tcp" ]
+turn_uris: [ "turn:{{ synapse_turn_uri }}:{{ synapse_turn_tls_port if (synapse_turn_tls_port is defined) else synapse_turn_port }}?transport=udp", "turn:{{ synapse_turn_uri }}:{{ synapse_turn_tls_port if (synapse_turn_tls_port is defined) else synapse_turn_port }}?transport=tcp" ]
 turn_shared_secret: {{ synapse_turn_shared_secret }}
 turn_user_lifetime: {{ synapse_turn_user_lifetime }}
 turn_allow_guests: {{ synapse_turn_allow_guests }}
