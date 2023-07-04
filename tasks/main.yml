@@ -1,7 +1,9 @@
 ---
 # tasks file for ansible-role-matrix-synapse
 
-- include_tasks: install_from_source.yml
+- include_tasks: install_from_{{ synapse_installation_method }}.yml
+
+- include_tasks: configure_synapse.yml
 
 - include_tasks: email.yml
 

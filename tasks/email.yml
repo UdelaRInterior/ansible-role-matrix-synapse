@@ -20,7 +20,7 @@
   - name: Configure Synapse mailing
     template:
       src: "{{ synapse_confd_templates_src }}/email.yaml.j2"
-      dest: "{{ synapse_installation_path }}/conf.d/email.yaml"
+      dest: "{{ synapse_config_path }}/conf.d/email.yaml"
       mode: 0644
       owner: root
       group: root
@@ -29,7 +29,7 @@
 
 - name: Disable mailing
   file:
-    path: "{{ synapse_installation_path }}/conf.d/email.yaml"
+    path: "{{ synapse_config_path }}/conf.d/email.yaml"
     state: absent
   notify: restart matrix-synapse
   when: not synapse_email_enable | bool

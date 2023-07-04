@@ -1,0 +1,24 @@
+---
+
+- name: Check if homeserver config file already exists
+  stat:
+    path: "{{ synapse_config_path }}/homeserver.yaml"
+  register: config_file
+
+
+- name: Enable matrix-synapse.service
+  systemd:
+    name: matrix-synapse.service
+    enabled: yes
+
+- name: Set custom configurations
+  template:
+    src: "{{ synapse_confd_templates_src }}/{{ item }}.yaml.j2"
+    dest: "{{ synapse_config_path }}/conf.d/{{ item }}.yaml"
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart matrix-synapse
+  with_items:
+    - custom
+    - registration

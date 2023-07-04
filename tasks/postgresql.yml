@@ -7,7 +7,7 @@
     name:
       - postgresql
       - libpq-dev
-      - "{{ 'python-psycopg2' if(ansible_distribution_major_version is version('10', '<=')) else 'python3-psycopg2' }}"
+      - python3-psycopg2
     state: present
 
 - name: Ensure PostgreSQL service is started
@@ -16,6 +16,7 @@
     state: started
 
 - name: Install Synapse PostgreSQL library
+  when: synapse_installation_method == "source"
   pip:
     name: matrix-synapse[postgres]
     chdir: "{{ synapse_installation_path }}"
@@ -44,7 +45,7 @@
 - name: Enable/disable PostgreSQL Database
   template:
     src: "{{ synapse_confd_templates_src }}/database.yaml.j2"
-    dest: "{{ synapse_installation_path }}/conf.d/database.yaml"
+    dest: "{{ synapse_config_path }}/conf.d/database.yaml"
     mode: 0644
     owner: root
     group: root

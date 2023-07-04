@@ -1,0 +1,55 @@
+---
+
+- name: Converge
+  hosts: all
+
+  pre_tasks: 
+    - name: Install GPG (required when installing from repository)
+      apt:
+        name: gpg
+        state: present
+
+  tasks:  # Self-signed certificates are created to avoid the challenge
+          # with Let's Encrypt but still be able to start nginx service
+    - name: Set facts to get a cleaner code
+      set_fact:
+        csr_to_test_path: "/etc/letsencrypt/{{ synapse_server_fqdn }}.csr"
+        privatekey_to_test_path: "/etc/letsencrypt/live/{{ synapse_server_fqdn }}/privkey.pem"
+        certificate_to_test_path: "/etc/letsencrypt/live/{{ synapse_server_fqdn }}/fullchain.pem"
+
+    - name: "Ensure /etc/letsencrypt/live/{{ synapse_server_fqdn }} directory exists"
+      file:
+        path: "/etc/letsencrypt/live/{{ synapse_server_fqdn }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Generate an OpenSSL private key
+      openssl_privatekey:
+        path: "{{ privatekey_to_test_path }}"
+        size: 2048
+
+    - name: Generate an OpenSSL Certificate Signing Request
+      openssl_csr:
+        path: "{{ csr_to_test_path }}"
+        privatekey_path: "{{ privatekey_to_test_path }}"
+        common_name: "{{ synapse_server_fqdn }}"
+
+    - name: Generate a Self Signed OpenSSL certificate
+      openssl_certificate:
+        path: "{{ certificate_to_test_path }}"
+        privatekey_path: "{{ privatekey_to_test_path }}"
+        csr_path: "{{ csr_to_test_path }}"
+        provider: selfsigned
+
+  roles:
+    - role: udelarinterior.matrix_synapse
+      vars:
+        synapse_installation_method: package
+        certbot_create_if_missing: false  # The dependency role geerlingguy.certbot is
+        certbot_auto_renew: false         # installed but no certificates will be generated
+
+        # For a full installation
+        synapse_with_turn: true
+        synapse_installation_with_element: true

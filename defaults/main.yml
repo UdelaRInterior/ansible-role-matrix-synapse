@@ -16,6 +16,10 @@ synapse_server_fqdn: "{{ inventory_hostname }}"
 
 # Location where synapse will be downloaded and installed from PyPI
 synapse_installation_path: /var/lib/matrix-synapse
+synapse_config_path: "{{ synapse_installation_path }}"
+
+# Installation method (package or source)
+synapse_installation_method: source
 
 # present : Keep the same version once synapse was installed or
 # latest : upgrade it if there is a new upgrade available from pip

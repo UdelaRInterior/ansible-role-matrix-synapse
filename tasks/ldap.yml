@@ -2,6 +2,7 @@
 
 - block:
   - name: Install LDAP authentication provider module
+    when: synapse_installation_method == "source"
     pip:
       name: matrix-synapse-ldap3
       chdir: "{{ synapse_installation_path }}"
@@ -12,7 +13,7 @@
   - name: Configure LDAP integration
     template:
       src: "{{ synapse_confd_templates_src }}/ldap.yaml.j2"
-      dest: "{{ synapse_installation_path }}/conf.d/ldap.yaml"
+      dest: "{{ synapse_config_path }}/conf.d/ldap.yaml"
       mode: 0644
       owner: root
       group: root
@@ -21,7 +22,7 @@
 
 - name: Disable LDAP integration
   file:
-    path: "{{ synapse_installation_path }}/conf.d/ldap.yaml"
+    path: "{{ synapse_config_path }}/conf.d/ldap.yaml"
     state: absent
   notify: restart matrix-synapse
   when: not synapse_with_ldap_authentication | bool
