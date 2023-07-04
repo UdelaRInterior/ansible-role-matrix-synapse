@@ -20,6 +20,8 @@ before_script:
 
 script:
   # Run tests.
+  - yammlint .
+  - ansible-lint --offline .
   - molecule test --all
 
 notifications:

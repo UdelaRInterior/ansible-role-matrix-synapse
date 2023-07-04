@@ -9,11 +9,6 @@ dependency:
 driver:
   name: docker
 
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
-
 platforms:
   - name: buster
     image: quay.io/paulfantom/molecule-systemd:debian-10
@@ -24,10 +19,6 @@ platforms:
 
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
 
 verifier:
   name: testinfra
-  lint:
-    name: flake8
