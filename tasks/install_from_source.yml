@@ -13,8 +13,8 @@
       - python3-dev
       - python3-pip
       - python3-psycopg2
-      - python3-setuptools
-      - python3-virtualenv
+      #- python3-setuptools
+      #- python3-virtualenv
       - sqlite3
     state: present
     update_cache: yes
@@ -22,12 +22,13 @@
 - name: Upgrade pip and setuptools
   pip:
     name:
-      - pip
+      #- pip
       - setuptools
       - virtualenv
       - ndg-httpsclient
       - twisted
     state: latest
+    extra_args: --break-system-packages
 
 - name: Create dedicated user for Synapse
   user:
