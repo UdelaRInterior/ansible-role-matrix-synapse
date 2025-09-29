@@ -13,8 +13,8 @@
       - python3-dev
       - python3-pip
       - python3-psycopg2
-      #- python3-setuptools
-      #- python3-virtualenv
+      - python3-setuptools
+      - python3-virtualenv
       - sqlite3
     state: present
     update_cache: yes
@@ -23,10 +23,13 @@
   pip:
     name:
       #- pip
-      - setuptools
-      - virtualenv
+      #- setuptools
+      #- virtualenv
       - ndg-httpsclient
       - twisted
+      - pydantic==1.10.11
+      - legacy-cgi
+
     state: latest
     extra_args: --break-system-packages
 
