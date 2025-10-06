@@ -27,7 +27,7 @@
       #- virtualenv
       - ndg-httpsclient
       - twisted
-      - pydantic==1.10.11
+      - pydantic
       - legacy-cgi
 
     state: latest
@@ -73,6 +73,12 @@
     path: "{{ synapse_installation_path }}/conf.d"
     state: directory
     mode: 0755
+
+- name: Change ownership .signing.key file
+  file:
+    path: "{{ synapse_installation_path }}/{{ inventory_hostname }}.signing.key"
+    owner: matrix_synapse
+    group: matrix_synapse
 
 - name: Create a system service to run Synapse
   template:
