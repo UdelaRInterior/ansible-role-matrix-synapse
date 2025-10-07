@@ -22,13 +22,11 @@
 - name: Upgrade pip and setuptools
   pip:
     name:
-      #- pip
-      #- setuptools
-      #- virtualenv
+      - pip
+      - setuptools
+      - virtualenv
       - ndg-httpsclient
       - twisted
-      - pydantic
-      - legacy-cgi
 
     state: latest
     extra_args: --break-system-packages
