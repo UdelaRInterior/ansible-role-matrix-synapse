@@ -74,7 +74,7 @@
 
 - name: Change ownership .signing.key file
   file:
-    path: "{{ synapse_installation_path }}/{{ inventory_hostname }}.signing.key"
+    path: "{{ synapse_installation_path }}/{{ synapse_server_name }}.signing.key"
     owner: matrix-synapse
     group: matrix-synapse
 
