@@ -22,7 +22,7 @@
 - name: Upgrade pip and setuptools
   pip:
     name:
-      - pip
+      #- pip
       - setuptools
       - virtualenv
       - ndg-httpsclient
