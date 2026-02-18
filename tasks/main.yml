@@ -16,3 +16,5 @@
 
 - include_tasks: element_web.yml
   when: synapse_installation_with_element | bool
+
+- include_tasks: server_notices.yml
