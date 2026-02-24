@@ -1,0 +1,39 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ synapse_admin_server_name }};
+    return 301 https://$host$request_uri;
+
+    access_log  /var/log/nginx/{{ synapse_admin_server_name }}.access.log;
+    error_log  /var/log/nginx/{{ synapse_admin_server_name }}.error.log;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name {{ synapse_admin_server_name }};
+
+    root {{ synapse_admin_installation_path }}/synapse-admin{{ synapse_admin_version }};
+
+    access_log  /var/log/nginx/{{ synapse_admin_server_name }}.access.log;
+    error_log  /var/log/nginx/{{ synapse_admin_server_name }}.error.log;
+
+    location / {
+        # note: do not add a path (even a single /) after the port in `proxy_pass`,
+        # otherwise nginx will canonicalise the URI and cause signature verification
+        # errors.
+        proxy_pass http://localhost:8081;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+
+        # Nginx by default only allows file uploads up to 1M in size
+        # Increase client_max_body_size to match max_upload_size defined in homeserver.yaml
+        client_max_body_size {{ synapse_max_upload_size }};
+    }
+
+    add_header Strict-Transport-Security "max-age=31536000";
+    ssl_certificate /etc/letsencrypt/live/{{ synapse_server_fqdn }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ synapse_server_fqdn }}/privkey.pem;
+
+}
