@@ -19,17 +19,10 @@
     state: present
     update_cache: yes
 
-- name: Upgrade pip and setuptools
-  pip:
-    name:
-      #- pip
-      - setuptools
-      - virtualenv
-      - ndg-httpsclient
-      - twisted
-
-    state: latest
-    extra_args: --break-system-packages
+- name: Create Matrix Synapse virtual environment
+  command:
+    cmd: python3 -m virtualenv {{ synapse_installation_path }}/env
+    creates: "{{ synapse_installation_path }}/env/bin/python"
 
 - name: Create dedicated user for Synapse
   user:
@@ -38,6 +31,17 @@
     home: "{{ synapse_installation_path }}"
     shell: /bin/false
     state: present
+
+- name: Upgrade pip and setuptools
+  pip:
+    name:
+      - setuptools
+      - ndg-httpsclient
+      - twisted
+    virtualenv: "{{ synapse_installation_path }}/env"
+    virtualenv_python: python3
+    state: latest
+    # extra_args: --break-system-packages
 
 - name: Install or update Synapse using pip
   pip:
