@@ -1,0 +1,110 @@
+---
+
+# Guia de instalacion: https://github.com/Awesome-Technologies/synapse-admin?tab=readme-ov-file#step-by-step-install
+
+- name: Create public directory for Synapse Admin
+  file:
+    path: "{{ synapse_admin_installation_path_web }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: synapse_admin_installation_method == 'release'
+
+- name: Download and unpack Synapse Admin
+  unarchive:
+    remote_src: yes
+    src: https://github.com/Awesome-Technologies/synapse-admin/releases/download/{{ synapse_admin_version }}/synapse-admin-{{ synapse_admin_version }}.tar.gz
+    dest: "{{ synapse_admin_installation_path_web }}"
+    owner: root
+    group: root
+    mode: 0755
+  when: synapse_admin_installation_method == 'release'
+
+- name: Ensure git is installed
+  apt:
+    name: git
+    state: present
+  when: synapse_admin_installation_method == 'source'
+
+- name: Ensure curl is installed
+  package:
+    name: curl
+    state: present
+  when: synapse_admin_installation_method == 'source'
+
+- name: Run NodeSource setup script via curl and bash
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  when: synapse_admin_installation_method == 'source'
+
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+  when: synapse_admin_installation_method == 'source'
+
+- name: Install Yarn globally using the npm module
+  npm:
+    name: yarn
+    global: true
+    state: present
+  when: synapse_admin_installation_method == 'source'
+
+- name: Download synapse-admin source code
+  git:
+    repo: https://github.com/Awesome-Technologies/synapse-admin.git
+    dest: "{{ synapse_admin_installation_path }}"
+    clone: yes
+    update: yes
+    force: yes
+  when: synapse_admin_installation_method == 'source'
+
+- name: Download specific yarn version
+  shell:
+    cmd: yarn set version berry
+    chdir: "{{ synapse_admin_installation_path }}"
+  when: synapse_admin_installation_method == 'source'
+
+- name: Download dependencies
+  shell:
+    cmd: yarn install
+    chdir: "{{ synapse_admin_installation_path }}"
+  when: synapse_admin_installation_method == 'source'
+
+- name: Set nginx configuration file
+  template:
+    src: "etc/nginx/sites-available/synapse_admin_{{ synapse_admin_installation_method }}.j2"
+    dest: /etc/nginx/sites-available/{{ synapse_admin_server_name }}.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart nginx
+  when: synapse_admin_installation_method in ['release', 'docker']
+
+- name: Ensure that Synapse admin site is enabled
+  file:
+    path: /etc/nginx/sites-enabled/{{ synapse_admin_server_name }}.conf
+    src: /etc/nginx/sites-available/{{ synapse_admin_server_name }}.conf
+    state: link
+  notify: restart nginx
+  when: synapse_admin_installation_method in ['release', 'docker']
+
+- name: Install Docker
+  include_tasks: install_docker.yml
+  when: synapse_admin_installation_method == 'docker'
+
+- name: Set port docker container
+  template:
+    src: "docker-compose.yml.j2"
+    dest: "{{ synapse_admin_installation_path }}/docker-compose.yml"
+    mode: 0644
+    owner: root
+    group: root
+  when: synapse_admin_installation_method == 'docker'
+
+- name: Run docker container
+  shell:
+    cmd: docker compose up -d
+    chdir: "{{ synapse_admin_installation_path }}"
+  when: synapse_admin_installation_method == 'docker'

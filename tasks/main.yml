@@ -16,3 +16,6 @@
 
 - include_tasks: element_web.yml
   when: synapse_installation_with_element | bool
+
+- include_tasks: synapse_admin.yml
+  when: synapse_installation_synpase_admin | bool
