@@ -74,7 +74,7 @@
 
 - name: Set nginx configuration file
   template:
-    src: "etc/nginx/sites-available/synapse_admin.j2"
+    src: "etc/nginx/sites-available/synapse_admin_{{ synapse_admin_installation_method }}.j2"
     dest: /etc/nginx/sites-available/{{ synapse_admin_server_name }}.conf
     mode: 0644
     owner: root
