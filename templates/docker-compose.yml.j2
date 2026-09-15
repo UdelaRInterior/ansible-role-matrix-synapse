@@ -1,0 +1,8 @@
+services:
+  synapse-admin:
+    container_name: synapse-admin
+    hostname: synapse-admin
+    image: awesometechnologies/synapse-admin:latest
+    ports:
+      - "{{ synapse_admin_port }}:80"
+    restart: unless-stopped

@@ -82,6 +82,12 @@
     owner: matrix-synapse
     group: matrix-synapse
 
+- name: Change ownership .signing.key file
+  file:
+    path: "{{ synapse_installation_path }}/{{ synapse_server_name }}.signing.key"
+    owner: matrix-synapse
+    group: matrix-synapse
+
 - name: Create a system service to run Synapse
   template:
     src: lib/systemd/system/matrix-synapse.service.j2

@@ -1,0 +1,61 @@
+---
+
+## Based on https://docs.docker.com/engine/install/debian/#install-using-the-repository
+
+- name: Check if Docker is installed
+  become: yes
+  command: docker -v 
+  register: docker_installed
+  ignore_errors: true
+
+- name: Install Docker 
+  become: yes
+  block:
+    - name: Add Docker's official GPG key
+      block:
+        - name: Update apt
+          ansible.builtin.apt:
+            update_cache: true
+        - name: Install necessary packages
+          become: yes
+          ansible.builtin.apt:
+            name:
+              - ca-certificates 
+              - curl
+            state: latest
+            update_cache: yes
+        - name: Add GPG key
+          ansible.builtin.shell:
+            cmd: |
+              sudo install -m 0755 -d /etc/apt/keyrings
+              sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+              sudo chmod a+r /etc/apt/keyrings/docker.asc
+    - name: Add the repository to Apt sources
+      block:
+        - name: Add repos
+          ansible.builtin.shell:
+            cmd: |
+              sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+              Types: deb
+              URIs: https://download.docker.com/linux/debian
+              Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+              Components: stable
+              Signed-By: /etc/apt/keyrings/docker.asc
+              EOF
+        - name: Update apt
+          ansible.builtin.apt:
+            update_cache: true
+
+    - name: Install Docker packages
+      become: yes
+      ansible.builtin.apt:
+        name:
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io=1.7.28-1~debian.12~bookworm
+          - docker-buildx-plugin 
+          - docker-compose-plugin
+        state: latest
+        update_cache: true
+        allow_downgrade: true
+  when: docker_installed.failed
