@@ -155,7 +155,7 @@ element_default_country_code: GB
 
 element_customatize_ui: false
 
-element_welcome_page_template_src: var/www/element/custom-welcome.html.j2   # Leave it empty if you don't want to overwrite the default Element welcome page
+element_welcome_page_template_src: ""   # Leave it empty if you don't want to overwrite the default Element welcome page
 element_welcome_logo_url: welcome/images/logo.svg
 element_welcome_title: 'Welcome to Element!'
 element_welcome_description: 'Decentralised, encrypted chat &amp; collaboration powered by [matrix]'
