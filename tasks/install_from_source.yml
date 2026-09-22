@@ -22,12 +22,14 @@
 - name: Upgrade pip and setuptools
   pip:
     name:
-      - pip
+      #- pip
       - setuptools
       - virtualenv
       - ndg-httpsclient
       - twisted
+
     state: latest
+    extra_args: --break-system-packages
 
 - name: Create dedicated user for Synapse
   user:
@@ -69,6 +71,12 @@
     path: "{{ synapse_installation_path }}/conf.d"
     state: directory
     mode: 0755
+
+- name: Change ownership .signing.key file
+  file:
+    path: "{{ synapse_installation_path }}/{{ synapse_server_name }}.signing.key"
+    owner: matrix-synapse
+    group: matrix-synapse
 
 - name: Create a system service to run Synapse
   template:

@@ -27,14 +27,20 @@
     group: root
     mode: 0664
 
-- name: Set custom Element welcome page
+- name: Copy Element custom images
+  synchronize:
+    src: "{{ element_img_src }}"
+    dest: "{{ element_img_dest }}"
+    owner: no
+    group: no
+
+- name: Copy custom welcome page
   template:
-    src: var/www/element/custom-welcome.html.j2
+    src: "{{ element_welcome_page_template_src }}"
     dest: "{{ element_installation_path }}/element-v{{ element_version }}/custom-welcome.html"
-    owner: root
-    group: root
-    mode: 0664
-  when: element_customatize_ui | bool
+  when:
+    - element_welcome_page_template_src is defined
+    - element_welcome_page_template_src | length > 0
 
 - name: Set nginx configuration file for Element Web
   template:
