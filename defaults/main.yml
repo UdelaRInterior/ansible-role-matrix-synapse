@@ -190,6 +190,36 @@ element_custom_themes:
       timeline-highlights-color: "#22262E"
 
 
+#########################
+#### Synapse Admin ######
+#########################
+
+# Provide a web UI to administrate your Synapse instance.
+# See https://github.com/Awesome-Technologies/synapse-admin
+synapse_installation_synpase_admin: false
+
+# Installation method: only one of them will run:
+#   - release: download the precompiled tarball and serve it statically via nginx
+#   - source : build from source code with node/yarn
+#   - docker : run the awesometechnologies/synapse-admin image via docker compose
+synapse_admin_installation_method: release
+
+# Our public domain name for the Synapse Admin web UI
+synapse_admin_server_name: "synapse-admin.{{ synapse_server_name }}"
+
+# Version of the tarball (release) to download. Look https://github.com/Awesome-Technologies/synapse-admin/releases to use the latest version
+synapse_admin_version: '0.11.4'
+
+# Web root where the release tarball is unpacked and served by nginx
+synapse_admin_installation_path_web: /var/www/synapse-admin
+
+# Path used for building from source (and where docker-compose.yml is written)
+synapse_admin_installation_path: /opt/synapse-admin
+
+# Host port used by the docker container
+synapse_admin_port: 8081
+
+
 ###################### geerlingguy.certbot vars ######################
 
 # # Certbot auto-renew cron job configuration (for certificate renewals).

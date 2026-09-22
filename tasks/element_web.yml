@@ -27,6 +27,13 @@
     group: root
     mode: 0664
 
+- name: Copy Element custom images
+  synchronize:
+    src: "{{ element_img_src }}"
+    dest: "{{ element_img_dest }}"
+    owner: no
+    group: no
+
 - name: Set custom Element welcome page
   template:
     src: var/www/element/custom-welcome.html.j2
