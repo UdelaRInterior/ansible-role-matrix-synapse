@@ -196,7 +196,7 @@ element_custom_themes:
 
 # Provide a web UI to administrate your Synapse instance.
 # See https://github.com/Awesome-Technologies/synapse-admin
-synapse_installation_synpase_admin: false
+synapse_installation_synapse_admin: false
 
 # Installation method: only one of them will run:
 #   - release: download the precompiled tarball and serve it statically via nginx

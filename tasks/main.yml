@@ -18,6 +18,7 @@
   when: synapse_installation_with_element | bool
 
 - include_tasks: server_notices.yml
+  when: synapse_installation_with_server_notices | bool
 
 - include_tasks: synapse_admin.yml
-  when: synapse_installation_synpase_admin | bool
+  when: synapse_installation_synapse_admin | bool
