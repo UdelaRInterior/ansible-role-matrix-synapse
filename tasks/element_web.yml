@@ -33,6 +33,9 @@
     dest: "{{ element_img_dest }}"
     owner: no
     group: no
+  when:
+    - element_img_src is defined
+    - element_img_dest is defined
 
 - name: Copy custom welcome page
   template:

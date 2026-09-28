@@ -159,6 +159,7 @@ element_welcome_page_template_src: ""   # Leave it empty if you don't want to ov
 element_welcome_logo_url: welcome/images/logo.svg
 element_welcome_title: 'Welcome to Element!'
 element_welcome_description: 'Decentralised, encrypted chat &amp; collaboration powered by [matrix]'
+element_button_signin: 'Sign in'
 
 element_custom_branding:
   welcomeBackgroundUrl: themes/element/img/backgrounds/lake.jpg
@@ -218,6 +219,18 @@ synapse_admin_installation_path: /opt/synapse-admin
 
 # Host port used by the docker container
 synapse_admin_port: 8081
+
+
+
+#######################
+###  Server notices ###
+#######################
+
+synapse_installation_with_server_notices: false
+synapse_sn_user: admin
+synapse_sn_user_display_name: "Synapse admin"
+synapse_sn_room_name: "Administrator notices"
+synapse_sn_room_topic: "Room for important notices"
 
 
 ###################### geerlingguy.certbot vars ######################
