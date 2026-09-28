@@ -1,24 +1,46 @@
 ---
 # tasks file for ansible-role-matrix-synapse
 
-- include_tasks: install_from_source.yml
 
-- include_tasks: email.yml
+- import_tasks: install_from_source.yml
+  tags:
+    - matrix_synapse_install
 
-- include_tasks: ldap.yml
+- import_tasks: email.yml
+  tags:
+    - matrix_synapse_install
 
-- include_tasks: turn.yml
+- import_tasks: ldap.yml
+  tags:
+    - matrix_synapse_install
 
-- include_tasks: nginx_reverse_proxy.yml
+- import_tasks: turn.yml
+  tags:
+    - matrix_synapse_install
 
-- include_tasks: postgresql.yml
+- import_tasks: nginx_reverse_proxy.yml
+  tags:
+    - matrix_synapse_install
+
+- import_tasks: postgresql.yml
   when: synapse_with_postgresql | bool
+  tags:
+    - matrix_synapse_install
 
-- include_tasks: element_web.yml
+- import_tasks: element_web.yml
   when: synapse_installation_with_element | bool
+  tags:
+    - matrix_synapse_install
+    - matrix_synapse_element
 
-- include_tasks: server_notices.yml
+- import_tasks: server_notices.yml
   when: synapse_installation_with_server_notices | bool
+  tags:
+    - matrix_synapse_install
+    - matrix_synapse_server_notices
 
-- include_tasks: synapse_admin.yml
+- import_tasks: synapse_admin.yml
   when: synapse_installation_synapse_admin | bool
+  tags:
+    - matrix_synapse_install
+    - matrix_synapse_admin

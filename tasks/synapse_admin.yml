@@ -91,7 +91,7 @@
   when: synapse_admin_installation_method in ['release', 'docker']
 
 - name: Install Docker
-  include_tasks: install_docker.yml
+  import_tasks: install_docker.yml
   when: synapse_admin_installation_method == 'docker'
 
 - name: Set port docker container
