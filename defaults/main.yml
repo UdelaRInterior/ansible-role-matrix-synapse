@@ -25,6 +25,10 @@ synapse_pip_state: present
 # change it for something like: "matrix-synapse==1.12.4"
 matrix_synapse_pip_pkg: "matrix-synapse"
 
+#Specific version of packages to install. Example: prometheus-client==0.23.1.
+matrix_synapse_specific_pkg: 
+  - prometheus-client==0.23.1
+
 # Enable sign up for new users
 synapse_enable_registration: false
 synapse_enable_registration_with_captcha: false

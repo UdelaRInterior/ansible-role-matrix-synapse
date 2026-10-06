@@ -52,6 +52,15 @@
     state: "{{ synapse_pip_state }}"
   notify: restart matrix-synapse
 
+- name: Install or update specific packages
+  pip:
+    name: "{{ matrix_synapse_specific_pkg }}"
+    chdir: "{{ synapse_installation_path }}"
+    virtualenv: "{{ synapse_installation_path }}/env"
+    virtualenv_python: python3
+    state: present
+  notify: restart matrix-synapse
+
 - name: Check if homeserver config file already exists
   stat:
     path: "{{ synapse_installation_path }}/homeserver.yaml"
