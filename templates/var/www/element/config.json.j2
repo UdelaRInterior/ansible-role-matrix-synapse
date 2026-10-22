@@ -13,16 +13,16 @@
     "disable_login_language_selector": false,
     "disable_3pid_login": false,
     "brand": "{{ element_display_name }}",
-{% if(element_customatize_ui) %}
-    "branding": {
-        "welcomeBackgroundUrl": "{{ element_custom_branding.welcomeBackgroundUrl }}",
-        "authHeaderLogoUrl": "{{ element_custom_branding.authHeaderLogoUrl }}",
-        "authFooterLinks": {{ element_custom_branding.authFooterLinks | to_json }}
+{% if(element_welcome_page_template_src is defined and element_welcome_page_template_src | length > 0) %}
+    "embedded_pages": {
+        "welcome_url": "custom-welcome.html"
     },
 {% endif %}
-{% if(element_welcome_page_template_src is defined and element_welcome_page_template_src | length > 0) %}
-    "embeddedPages": {
-        "welcomeUrl": "custom-welcome.html"
+{% if(element_customatize_ui) %}
+    "branding": {
+        "welcome_background_url": "{{ element_custom_branding.welcomeBackgroundUrl }}",
+        "auth_header_logo_url": "{{ element_custom_branding.authHeaderLogoUrl }}",
+        "auth_footer_links": {{ element_custom_branding.authFooterLinks | to_json }}
     },
 {% endif %}
     "integrations_ui_url": "https://scalar.vector.im/",
@@ -36,8 +36,8 @@
     ],
     "integrations_jitsi_widget_url": "https://scalar.vector.im/api/widgets/jitsi.html",
     "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
-    "defaultCountryCode": "{{ element_default_country_code }}",
-    "showLabsSettings": false,
+    "default_country_code": "{{ element_default_country_code }}",
+    "show_labs_settings": false,
     "features": {
         "feature_new_spinner": "labs",
         "feature_pinning": "labs",
@@ -47,12 +47,12 @@
     },
     "default_federate": true,
     "default_theme": "{{ element_default_theme }}",
-    "roomDirectory": {
+    "room_directory": {
         "servers": [
             "matrix.org"
         ]
     },
-    "welcomeUserId": "@riot-bot:matrix.org",
+    "welcome_user_id": "@riot-bot:matrix.org",
     "piwik": {
         "url": "https://piwik.riot.im/",
         "whitelistedHSUrls": ["https://matrix.org"],
@@ -63,13 +63,13 @@
         "https://matrix.org": false,
         "https://matrix-client.matrix.org": false
     },
-    "settingDefaults": {
+    "setting_defaults": {
         "breadcrumbs": true
 {% if(element_customatize_ui) %}
         , "custom_themes": {{ element_custom_themes | to_nice_json }}
 {% endif %}
     },
     "jitsi": {
-        "preferredDomain": "{{ element_jitsi_preferred_domain }}"
+        "preferred_domain": "{{ element_jitsi_preferred_domain }}"
     }
 }
